@@ -24,11 +24,15 @@ module.exports.getUserById = function(id, callback) {
 	User.findById(id, callback);
 }
 
-module.exports.getUserByUsername = function(username){
-	var query = {
-			username:username
-		};
-	Class.findOne(query, callback);
+module.exports.getUserByUsername = function(username, callback){
+	try{		
+		var query = {
+				username:username
+			};
+		User.findOne(query, callback);
+	} catch(err){
+		console.log(err);
+	}
 }
 
 module.exports.comparePassword = function(candidatePassword, password, callback){

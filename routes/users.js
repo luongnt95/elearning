@@ -117,12 +117,12 @@ router.post('/signup', function(req, res, next){
 });
 
 //GET log in
-router.get('/login', function(req, res, next){
+/* router.get('/login', function(req, res, next){
 	res.render('login', {
 		'title': 'Login'
 	});
 });
-
+*/
 //POST Login
 
 passport.serializeUser(function(user, done) {
@@ -137,7 +137,7 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-	    User.getUserbyUsername(username, function(err, user) {
+	    User.getUserByUsername(username, function(err, user) {
 	        if (err) throw err;
 	        if (!user) {
 	            console.log('Invalid Username');
@@ -149,6 +149,7 @@ passport.use(new LocalStrategy(
 	        User.comparePassword(password, user.password, function(err, isMatch) {
 	            if (err) throw err;
 	            if (isMatch) {
+
 	                return done(null, user);
 	            } else {
 	                console.log('Invalid Password');
@@ -164,10 +165,10 @@ passport.use(new LocalStrategy(
 
 router.post('/login',
  	passport.authenticate('local', {
-    	failureRedirect: '/users/login',
+    	failureRedirect: '/',
     	failureFlash: 'Invalid username or password'
 	}), 
-	function(req, res) {
+	function(req, res, next) {
 		console.log('Authentication Successful');
 		req.flash('success', 'You are logged in ');
 		res.redirect('/');
@@ -177,7 +178,14 @@ router.post('/login',
 router.get('/logout', function(req, res){
 	req.logout();
 	req.flash('success', 'You have logged out');
-	res.redirect('/users/login');
+	res.redirect('/');
 });
+
+function ensureAuthenticated(req, res, next) {
+	if (req.isAuthenticated()) {
+		return next();
+	}
+	res.redirect('/');
+}
 
 module.exports = router;

@@ -78,10 +78,18 @@ app.use(flash());
 //messages
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
+  res.locals.isHome = (req.url == '/');
   next();
 });
 
-
+//Make user object global in all views
+app.get('*', function(req, res, next) {
+  res.locals.user = req.user || null;
+  if (req.user){
+    res.locals.usertype = req.user.type;
+  }
+  next();
+});
 
 app.use('/', routes);
 app.use('/users', users);
