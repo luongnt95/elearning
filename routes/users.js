@@ -1,9 +1,8 @@
 var express = require('express');
+var router = express.Router();
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
-var router = express.Router();
 
 var User = require('../models/user');
 
@@ -72,7 +71,7 @@ router.post('/signup', function(req, res, next){
 			type: type
 		});
 
-		if (type = 'student'){
+		if (type == 'student'){
 			try{				
 				var newStudent = new Student({
 					first_name: first_name,
@@ -171,7 +170,8 @@ router.post('/login',
 	function(req, res, next) {
 		console.log('Authentication Successful');
 		req.flash('success', 'You are logged in ');
-		res.redirect('/');
+		var usertype = req.user.type;
+		res.redirect('/' + usertype + 's/classes');
 	}
 );
 
