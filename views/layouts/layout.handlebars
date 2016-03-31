@@ -9,8 +9,22 @@
 <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" media="all" />                          <!-- CUSTOM STYLES -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/javascripts/kickstart.js"></script>                                  <!-- KICKSTART -->
-<script type = "text/javascript" src="/javascript/tinymce.min.js"></script>
-<script>tinymce.init({ selector:'textarea' });</script>
+<!--<script type = "text/javascript" src="/javascripts/tinymce.min.js"></script> -->
+<script type="text/javascript" src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+<script>tinymce.init({ 
+	selector:'#tinytextarea',
+    theme: 'modern',
+    width: 600,
+    height: 300,
+    plugins: [
+      'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+      'save table contextmenu directionality emoticons template paste textcolor'
+    ],
+    content_css: 'css/content.css',
+    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+});</script>
+
 </head><body>
 
 <!-- Menu Horizontal -->
