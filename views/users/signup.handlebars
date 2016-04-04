@@ -1,32 +1,37 @@
 <h2> Create an account </h2>
 
-<form id='regForm' action='/users/signup' method='post'>    
-    <div>
-    	<label> Account Type </label>
-    	<select name="type">
-    		<option value="student"> Student </option>
-    		<option value="instructor"> Instructor </option>
-    	</select>
-    </div>
+<form id='regForm' action='/users/signup' method='post' class="ui form">
+  <div class="field">
+      <label>Account Type</label>
+      <select name="type" class="ui fluid dropdown">
+        <option value="student">Student</option>
+        <option value="instructor">Instructor</option>
+      </select>
+  </div>
+  <div class="field">
+    <label>First Name:</label>
+    <input type="text" name="first_name" placeholder="First Name" value="{{first_name}}">
+  </div>
+  <div class="field">
+    <label>Last Name:</label>
+    <input type="text" name="last_name" placeholder="Last Name" value="{{last_name}}" >
+  </div>
+   <div class="field">
+    <label>Email:</label>
+    <input type="text" name="email" placeholder="Last Name" value="{{email}}" >
+  </div>
+  <div class="field">
+    <label>UserName:</label>
+    <input type="text" name="username" placeholder="User nam" value="{{username}}" >
+  </div>
+   <div class="field">
+    <label>Password:</label>
+    <input type="password" name="password" placeholder="Password">
+  </div>
+   <div class="field">
+    <label>Password Confimation:</label>
+    <input type="password" name="password2" placeholder="PasswordConfimation" >
+  </div>
 
-	<label for='first_name' >First Name*: </label>
-	<input type='text' name='first_name' maxlength="50" value="{{first_name}}" />
-
-	<label for='last_name' >Last Name*: </label>
-	<input type='text' name='last_name' maxlength="50" value="{{last_name}}" />
-
-	<label for='email' >Email Address*:</label>
-	<input type='text' name='email' id='email' maxlength="50" value="{{email}}" />
-	 
-	<label for='username' >UserName*:</label>
-	<input type='text' name='username' id='username' maxlength="50" value="{{username}}" />
-	 
-	<label for='password' >Password*:</label>
-	<input type='password' name='password' id='password' maxlength="50" />
-
-	<label for='password2' >Password confirmation*:</label>
-	<input type='password' name='password2' id='password2' maxlength="50" />
-
-	<input type='submit' name='Submit' value='Submit' />
-	 
+  <button class="ui primary button" type="submit">Submit</button>
 </form>

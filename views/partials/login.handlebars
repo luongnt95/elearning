@@ -1,19 +1,23 @@
+<div class="ui segment">
 {{#if user}}
-	<h5> Welcome Back {{user.username}} </h5>
+	<h5> Welcome, {{user.username}} </h5>
 	<ul class="alt">
 		<li> <a href="/{{usertype}}s/classes"> My classes </a> </li>
 		<li><a href="/users/logout"> Logout </a>
-		
+
 	</ul>
 {{else}}
-
-	<h4>Student & Instructor Login</h4>
-	<form method="post" action="/users/login">
-		<label>  Username: </label>
-		<input type='text' name="username" value="">
-		<label>  Password: </label>
-		<input type='password' name="password">
-		<input type="submit" class="button" value="login">
-	</form>
-
+		<h4>Student & Instructor Login</h4>
+		<form class="ui form" method="post" action="/users/login">
+		  <div class="field">
+		    <label>Username: </label>
+		    <input type="text" name="username" placeholder="Name">
+		  </div>
+		  <div class="field">
+		    <label>Password: </label>
+		    <input type="password" name="password" placeholder="Password">
+		  </div>
+		  <button class="ui primary button" type="submit">Submit</button>
+		</form>
 {{/if}}
+</div>
