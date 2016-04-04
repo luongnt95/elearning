@@ -13,6 +13,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var multer = require('multer');
+//
 mongoose.connect('mongodb://localhost/elearn');
 var db = mongoose.connection;
 async = require('async');
@@ -51,6 +52,7 @@ app.use(session({
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
+//app.use(passport.authenticate('local'));
 
 
 // Validator
@@ -129,6 +131,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
