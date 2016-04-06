@@ -29,6 +29,10 @@ module.exports.getClasses = function(callback, limit){
 	Class.find(callback).limit(limit);
 }
 
+module.exports.saveClass = function(newClass, callback){
+	newClass.save(callback);
+}
+
 module.exports.getClassesById = function(id, callback){
 	Class.findById(id, callback);
 }
