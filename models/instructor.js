@@ -44,6 +44,27 @@ module.exports.getInstructorByUsername = function(username, callback) {
 	}
 }
 
+module.exports.saveClass = function(info, callback) {
+	instructor_username = info.instructor_username; 
+	class_id = info.class_id;
+	class_title = info.class_title;
+
+	var query = {
+		username: info.instructor_username
+	}
+	try{		
+		Instructor.findOneAndUpdate(
+			query,
+			{$push: {"classes": {class_id: class_id, class_title: class_title}}},
+			{safe:true, upsert: true},
+			callback
+			);
+	} catch(err){
+		console.log(err);
+	}
+}
+
+
 module.exports.register = function(info, callback){
 	instructor_username = info.instructor_username; 
 	class_id = info.class_id;

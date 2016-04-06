@@ -51,6 +51,34 @@ router.post('/classes/:id/lessons/new', function(req, res){
 	res.redirect('/instructors/classes');
 });
 
+router.get('/classes/new', ensureAuthenticated, function(req, res, next){	
+	res.render('instructors/newClass');	
+});
+
+router.post('/classes/new', ensureAuthenticated, function(req, res){
+	var newClass = new Class({
+		title: req.body.class_title,
+		description : req.body.class_description,
+		instructor: req.user.username
+	});
+	
+	Class.saveClass(newClass, function(err, newClass){
+		if (err) throw err;
+		console.log("class :  ", newClass);
+		var info = {
+			instructor_username : req.user.username,
+			class_id : newClass._id,
+			class_title : newClass.title
+		}
+		Instructor.saveClass(info, function(err, instructor){
+			if (err) throw err;
+			console.log(instructor);
+		});
+	});
+	req.flash('success', 'You are added a new class');
+	res.redirect('/instructors/classes');
+});
+
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
