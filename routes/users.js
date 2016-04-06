@@ -124,6 +124,20 @@ router.post('/signup', function(req, res, next){
 */
 //POST Login
 
+var tokens = {}
+
+function consumeRememberMeToken(token, fn) {
+  var uid = tokens[token];
+  // invalidate the single-use token
+  delete tokens[token];
+  return fn(null, uid);
+}
+
+function saveRememberMeToken(token, uid, fn) {
+  tokens[token] = uid;
+  return fn();
+}
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -132,7 +146,7 @@ passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
   });
-});
+}); 
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -148,7 +162,6 @@ passport.use(new LocalStrategy(
 	        User.comparePassword(password, user.password, function(err, isMatch) {
 	            if (err) throw err;
 	            if (isMatch) {
-
 	                return done(null, user);
 	            } else {
 	                console.log('Invalid Password');
@@ -160,8 +173,51 @@ passport.use(new LocalStrategy(
 	    });
 	}
 ));
+/*
+// Remember Me cookie strategy
+//   This strategy consumes a remember me token, supplying the user the
+//   token was originally issued to.  The token is single-use, so a new
+//   token is then issued to replace it.
+passport.use(new RememberMeStrategy(
+  function(token, done) {
+    consumeRememberMeToken(token, function(err, uid) {
+      if (err) { return done(err); }
+      if (!uid) { return done(null, false); }
+      
+      findById(uid, function(err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        return done(null, user);
+      });
+    });
+  },
+  issueToken
+)); 
 
+function issueToken(user, done) {
+  var token = utils.randomString(64);
+  saveRememberMeToken(token, user.id, function(err) {
+    if (err) { return done(err); }
+    return done(null, token);
+  });
+}
 
+router.post('/login', 
+  passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
+  function(req, res, next) {
+    // Issue a remember me cookie if the option was checked
+    if (!req.body.remember_me) { return next(); }
+    
+    issueToken(req.user, function(err, token) {
+      if (err) { return next(err); }
+      res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });
+      return next();
+    });
+  },
+  function(req, res) {
+    res.redirect('/');
+  });
+*/
 router.post('/login',
  	passport.authenticate('local', {
     	failureRedirect: '/',
