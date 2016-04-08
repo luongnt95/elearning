@@ -14,12 +14,10 @@ var studentSchema = mongoose.Schema({
 		state: {type:String},
 		zip:{type:String}
 	}],
-	username:{
-		type: String
-	},
 	email: {
 		type: String
-	},   
+	},
+	user_id: String,
 	classes:[{
 		class_id:{
 			type: [mongoose.Schema.Types.ObjectId]			
@@ -61,3 +59,13 @@ module.exports.register = function(info, callback){
 	}
 }
 
+/*module.exports.findOneBy = function(info={type: "", value: ""}, callback) {
+	Student.findOne({info.type: info.value}, function(err, student) {
+		if(err) {
+			console.log(err)
+		}
+		else {
+			callback(err, student);
+		}
+	});
+}*/

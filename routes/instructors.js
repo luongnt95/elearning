@@ -5,6 +5,61 @@ Class = require('../models/class');
 Instructor = require('../models/instructor');
 User = require('../models/user');
 
+router.get('/:id/profile', function(req, res, next) {
+	var user_id = req.params.id;
+	Instructor.findOne({user_id: user_id}, function(err, instructor) {
+		if(err) {
+			res.send(err);
+		}
+		else {
+			res.render('instructors/edit', {"instructor": instructor});
+		}
+	});
+});
+
+router.post('/:id/update', function(req, res, next) {
+	var user_id = req.params.id;
+	var first_name = req.body.first_name;
+	var last_name = req.body.last_name;
+	var email = req.body.email;
+	var username = req.body.username;
+
+	User.findById(user_id, function(err, user) {
+		if(err) {
+			res.send(err);
+		}
+		else {
+			user.username = username;
+			user.email = email;
+			user.save(function(err) {
+				if(err) {
+					res.send(err);
+				}
+				else {
+					res.locals.user = user;				
+				}
+			});
+		}
+	});
+
+	Instructor.findOne({user_id: user_id}, function(err, instructor) {
+		if(err) {
+			res.send(err);
+		}
+		else {
+			instructor.first_name = first_name;
+			instructor.last_name = last_name;
+			instructor.email = email;
+			instructor.save(function(err) {
+				if(err) {
+					res.send(err);
+				}
+			});
+		}
+	});
+	res.redirect('/');
+});
+
 router.get('/classes', ensureAuthenticated, function(req, res, next){
 	Instructor.getInstructorByUsername(req.user.username, function(err, instructor){
 		if (err) {

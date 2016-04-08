@@ -14,12 +14,10 @@ var instructorSchema = mongoose.Schema({
 		state: {type:String},
 		zip:{type:String}
 	}],
-	username:{
-		type: String
-	},
 	email: {
 		type: String
 	},
+	user_id: String,
 	classes:[{
 		class_id:{
 			type: [mongoose.Schema.Types.ObjectId]			

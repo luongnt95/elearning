@@ -10,11 +10,11 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var mongo = require('mongodb');
 var mongoose = require('mongoose');
 var multer = require('multer');
 
-mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
+/*mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");*/
+mongoose.connect("mongodb://localhost/elearn");
 var db = mongoose.connection;
 async = require('async');
 

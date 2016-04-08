@@ -83,7 +83,8 @@ router.post('/signup', function(req, res, next){
 						zip: zip
 					}],
 					email: email,
-					username: username
+					username: username,
+					user_id: newUser.id
 				});
 
 				User.saveStudent(newUser, newStudent, function(err, user){
@@ -103,7 +104,8 @@ router.post('/signup', function(req, res, next){
 					zip: zip
 				}],
 				email: email,
-				username: username
+				username: username,
+				user_id: newUser.id
 			});
 			User.saveInstructor(newUser, newInstructor, function(err, user){
 				console.log('Instructor created');
