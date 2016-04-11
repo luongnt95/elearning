@@ -9,7 +9,7 @@
 	{{/each}}
 </ul>
 
-{{#if user}}
+{{#if isStudent}}
 	<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
 		<input type="hidden" name="student_id" value="{{user._id}}">
 		<input type="hidden" name="student_username" value="{{user.username}}">
@@ -18,5 +18,5 @@
 		<input type="submit" class="button" value="Register for this class" >
 	</form>
 {{else}}
-	<p><em> You must be logged in to register for this class </em> </p>
+	<p><em> You must be a student or logged in to register for learn this class </em> </p>
 {{/if}}

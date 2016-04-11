@@ -66,6 +66,8 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 			console.log(err);
 			res.send(err);
 		} else {
+			console.log(instructor.classes);
+			
 			res.render('instructors/classes', {"instructor": instructor});
 		}
 	});
@@ -87,7 +89,7 @@ router.post('/classes/register', function(req, res){
 });
 
 router.get('/classes/:id/lessons/new', ensureAuthenticated, function(req, res, next){	
-	res.render('instructors/newlesson', {"class_id": req.params.id});	
+	res.render('instructors/newlesson', {class_id: req.params.id});	
 });
 
 router.post('/classes/:id/lessons/new', function(req, res){
@@ -97,13 +99,38 @@ router.post('/classes/:id/lessons/new', function(req, res){
 		lesson_title : req.body.lesson_title,
 		lesson_body : req.body.lesson_body
 	}
-	
-	Class.addLesson(info, function(err, lesson){
-		if (err) throw err;
-		console.log("lesson :  ", lesson);
-	});
-	req.flash('success', 'You are added a new lesson');
-	res.redirect('/instructors/classes');
+	// Form Field Validation
+	try{
+		req.checkBody('lesson_number', 'Lesson number name is required').notEmpty();
+		req.checkBody('lesson_title', 'Lesson title is required').notEmpty();
+		req.checkBody('lesson_body', 'Lesson content is required').notEmpty();
+
+		var errors = req.validationErrors();
+	}
+	catch(err){
+		console.log(err);
+	}
+
+	if (errors) {
+		console.log("Errors: ", errors);
+		console.log('/instructors/classes/'+ info.class_id + '/lessons/new');
+		try{
+			res.render('instructors/newlesson', {
+				errors: errors,
+				info: info,
+				class_id: info.class_id
+			});
+		} catch(err){
+			console.log(err);
+			}
+	} else {
+		Class.addLesson(info, function(err, lesson){
+			if (err) throw err;
+			console.log("lesson :  ", lesson);
+		});
+		req.flash('success', 'You are added a new lesson');
+		res.redirect('/instructors/classes');		
+	}	
 });
 
 router.get('/classes/new', ensureAuthenticated, function(req, res, next){	
@@ -128,6 +155,71 @@ router.post('/classes/new', ensureAuthenticated, function(req, res){
 		Instructor.saveClass(info, function(err, instructor){
 			if (err) throw err;
 			console.log(instructor);
+		});
+	});
+	req.flash('success', 'You are added a new class');
+	res.redirect('/instructors/classes');
+});
+
+router.get('/classes/:id/edit', ensureAuthenticated, function(req, res, next){	
+	Class.getClassesById(req.params.id, function(err, classDetails){
+		if (err) throw err;
+		res.render('instructors/editClass', {"class": classDetails});	
+	});
+});
+
+router.post('/classes/:id/edit', ensureAuthenticated, function(req, res){	
+	var info = {
+		instructor_username: req.user.username,
+		class_id : req.params.id,
+		class_title : req.body.class_title,
+		class_description : req.body.class_description
+	}
+	Class.updateClass(info, function(err, newClass){
+		if (err) throw err;
+		console.log("class :  ", newClass);
+		Instructor.getInstructorById(req.user._id, function(err, instructor){
+			if (err) throw err;
+			console.log("Instructor :  ", instructor);
+			for ($i=0; $i<instructor.classes.length; $i++) {
+				if (instructor.classes[$i].class_id == info.class_id) {
+					instructor.classes[$i].class_title = info.class_title;
+					break;
+				}
+			}
+			instructor.save(function(err, instructor){
+				if (err) throw err;
+				console.log("Instructor update:  ", instructor);
+			});
+		});
+	});
+	req.flash('success', 'You are added a new class');
+	res.redirect('/instructors/classes');
+});
+
+router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){	
+	var info = {
+		instructor_username: req.user.username,
+		class_id : req.params.id,
+	}
+	Class.destroyClass(info, function(err){
+		console.log(err);
+		if (err) throw err;
+		Instructor.getInstructorById(req.user._id, function(err, instructor){
+			if (err) throw err;
+			console.log("Instructor :  ", instructor);
+
+			instructor.classes.filter(function(classDetails){return classDetails.class_id != info.class_id});
+			/*for ($i=0; $i<instructor.classes.length; $i++) {
+				if (instructor.classes[$i].class_id == info.class_id) {
+					instructor.classes[$i].remove();
+					break;
+				}
+			}*/
+			instructor.save(function(err, instructor){
+				if (err) throw err;
+				console.log("Instructor update:  ", instructor);
+			});
 		});
 	});
 	req.flash('success', 'You are added a new class');

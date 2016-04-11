@@ -30,6 +30,10 @@ var instructorSchema = mongoose.Schema({
 
 var Instructor = module.exports = mongoose.model('Instructor', instructorSchema);
 
+module.exports.getInstructorById = function(id, callback) {
+	Instructor.findById(id, callback);
+}
+
 
 module.exports.getInstructorByUsername = function(username, callback) {
 	var query = {

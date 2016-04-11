@@ -33,6 +33,10 @@ module.exports.saveClass = function(newClass, callback){
 	newClass.save(callback);
 }
 
+module.exports.destroyClass = function(info, callback){
+	Class.remove({_id: info.class_id}, callback);
+}
+
 module.exports.getClassesById = function(id, callback){
 	Class.findById(id, callback);
 }
@@ -48,4 +52,15 @@ module.exports.addLesson = function(info, callback){
 		{upsert:true, safe:true},
 		callback
 	);
+}
+
+
+module.exports.updateClass = function(info, callback){
+	console.log(info);
+	Class.findById(info.class_id, function(err, classDetails){
+		if (err) throw err;
+		classDetails.title = info.class_title;
+		classDetails.description = info.class_description;
+		classDetails.save(callback);
+	});
 }

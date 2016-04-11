@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 Class = require('../models/class');
+Student = require('../models/student');
 
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
@@ -11,7 +12,7 @@ router.get('/', function(req, res, next) {
 		} else {
   			res.render('classes/index', { "classes": classes });
 		}
-	}, 3);
+	}, 20);
 });
 
 router.get('/:id', function(req, res, next){
@@ -19,8 +20,12 @@ router.get('/:id', function(req, res, next){
 		if (err) {
 			console.log(err);
 			res.send(err);
-		} else {
-			res.render('classes/detail', {"class": classDetail });
+		} else {						
+			isStudent = false;
+			if (req.user){
+				isStudent = req.user.type == 'student';
+			}
+			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent });
 		}
 	})
 });

@@ -1,6 +1,6 @@
 <h2> {{instructor.first_name}}'s Classes </h2>
 
-<th> <a href="/instructors/classes/new"> New Class </a> </th>
+<a href="/instructors/classes/new"> New Class </a>
 
 <table cellspacing="0" cellpadding="0">
 	<thread>
@@ -17,6 +17,14 @@
 					<th> {{{class_title}}} </th>
 					<th> <a href="/classes/{{class_id}}/lessons"> View Lessons </a> </th>
 					<th> <a href="/instructors/classes/{{class_id}}/lessons/new"> Added Lesson </a> </th>
+					<th> <a href="/instructors/classes/{{class_id}}/edit"> Edit Class </a> </th>
+					<th>
+						<form method = "post" action="/instructors/classes/{{class_id}}/drop">
+							<div>
+								<input type="submit" class="button" value="Drop Class" >
+							</div>
+						</form>
+					</th>
 				</tr>
 			{{/each}}
 		</tbody>
