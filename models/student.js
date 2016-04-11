@@ -49,15 +49,16 @@ module.exports.register = function(info, callback){
 	student_username = info.student_username; 
 	class_id = info.class_id;
 	class_title = info.class_title;
-
-	var query = {username: student_username};
 	try{		
 		ok = true;
-		Student.findOne(query, function(err, student){
-			for ($i=0; $i<student.classes.length; $i++) {
-				if (class_id == student.classes[$i].class_id) {
-					ok = false;
-					break;
+		Student.getStudentByUsername(student_username, function(err, student){
+			if (err) throw err;
+			if (student.classes){				
+				for ($i=0; $i<student.classes.length; $i++) {
+					if (class_id == student.classes[$i].class_id) {
+						ok = false;
+						break;
+					}
 				}
 			}
 			if (ok) {

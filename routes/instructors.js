@@ -66,7 +66,7 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 			console.log(err);
 			res.send(err);
 		} else {
-			console.log(instructor.classes);
+			//console.log(instructor.classes);
 			
 			res.render('instructors/classes', {"instructor": instructor});
 		}
@@ -177,7 +177,7 @@ router.post('/classes/:id/edit', ensureAuthenticated, function(req, res){
 	}
 	Class.updateClass(info, function(err, newClass){
 		if (err) throw err;
-		console.log("class :  ", newClass);
+		//console.log("class :  ", newClass);
 		Instructor.getInstructorById(req.user._id, function(err, instructor){
 			if (err) throw err;
 			console.log("Instructor :  ", instructor);
@@ -189,7 +189,7 @@ router.post('/classes/:id/edit', ensureAuthenticated, function(req, res){
 			}
 			instructor.save(function(err, instructor){
 				if (err) throw err;
-				console.log("Instructor update:  ", instructor);
+				//console.log("Instructor update:  ", instructor);
 			});
 		});
 	});
@@ -205,17 +205,19 @@ router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){
 	Class.destroyClass(info, function(err){
 		console.log(err);
 		if (err) throw err;
-		Instructor.getInstructorById(req.user._id, function(err, instructor){
+		Instructor.getInstructorByUsername(req.user.username, function(err, instructor){
 			if (err) throw err;
-			console.log("Instructor :  ", instructor);
+			//console.log("Instructor finded:  ", instructor.classes[0].class_id[0]==info.class_id);
 
-			instructor.classes.filter(function(classDetails){return classDetails.class_id != info.class_id});
+			instructor.classes = instructor.classes.filter(function(classDetails){return classDetails.class_id[0] != info.class_id});
 			/*for ($i=0; $i<instructor.classes.length; $i++) {
 				if (instructor.classes[$i].class_id == info.class_id) {
 					instructor.classes[$i].remove();
 					break;
 				}
 			}*/
+
+			console.log("Instructor dede:  ", instructor.classes);
 			instructor.save(function(err, instructor){
 				if (err) throw err;
 				console.log("Instructor update:  ", instructor);
