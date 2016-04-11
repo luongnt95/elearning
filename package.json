@@ -18,11 +18,8 @@
     "express-session": "*",
     "express-validator": "*",
     "jade": "~1.11.0",
-<<<<<<< HEAD
-=======
     "mongodb": "*",
     "mongoose": "4.4.11",
->>>>>>> fix add leassons
     "morgan": "~1.6.1",
     "multer": "*",
     "passport": "*",
