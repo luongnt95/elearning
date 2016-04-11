@@ -1,0 +1,37 @@
+<h2> EditClass </h2>
+
+<form id="regForm" method = "post" action="/instructors/classes/{{class._id}}/edit">
+	<div>
+		<label> Class Title </label>
+		<input type="text" name = "class_title" value="{{class.title}}">
+	</div>
+	<div>
+		<label> Class Description </label>
+		<textarea id="tinytextarea" name="class_description"> {{class.description}} </textarea>
+	</div>
+
+
+	<table cellspacing="0" cellpadding="0">
+		<thread>
+			<tr>
+				<th> Lesson Number </th>
+				<th> Lesson Title </th>
+				<th> </th>
+			</tr>
+			<tbody>
+				{{#each class.lessons}}				
+					<tr>
+						<th> {{lesson_number}}</th>
+						<th> {{{lesson_title}}} </th>
+						<th> <a href="/classes/{{../class._id}}/lessons/{{lesson_number}}/edit"> Edit Lesson </a> </th>
+					</tr>
+				{{/each}}
+			</tbody>
+		</thread>
+	</table>
+	
+	<div>
+		<input type="submit" class="button" value="Save changes" >
+	</div>
+</form>
+

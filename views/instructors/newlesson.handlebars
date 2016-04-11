@@ -1,17 +1,16 @@
 <h2> Add Lesson </h2>
-
 <form id="regForm" method = "post" action="/instructors/classes/{{class_id}}/lessons/new">
 	<div>
 		<label> Lesson Number </label>
-		<input type="text" name = "lesson_number">
+		<input type="text" name = "lesson_number" value="{{info.lesson_number}}"">
 	</div>
 	<div>
 		<label> Lesson Title </label>
-		<input type="text" name = "lesson_title">
+		<input type="text" name = "lesson_title" value = "{{{info.lesson_title}}}">
 	</div>
 	<div>
 		<label> Lesson Body </label>
-		<textarea id="tinytextarea" name="lesson_body"> </textarea>
+		<textarea id="tinytextarea" name="lesson_body"> {{{info.lesson_body}}} </textarea>
 	</div>
 	<div>
 		<input type="submit" class="button" value="Save new lesson" >

@@ -13,8 +13,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var multer = require('multer');
 
-mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
-// mongoose.connect("mongodb://localhost/elearn");
+////'mongodb://localhost/elearn'
+mongoose.connect('mongodb://localhost/elearn');
 var db = mongoose.connection;
 async = require('async');
 
@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle Express Session
 app.use(session({
-  secret:'secret',
+  secret:'son+luong+hung',
   saveUninitialized: true,
   resave: true
 }));
