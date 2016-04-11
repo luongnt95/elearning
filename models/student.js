@@ -14,13 +14,10 @@ var studentSchema = mongoose.Schema({
 		state: {type:String},
 		zip:{type:String}
 	}],
-<<<<<<< HEAD
-=======
 	username:{
 		type: String,
 		index: { unique: true }
 	},
->>>>>>> fix add leassons
 	email: {
 		type: String
 	},
