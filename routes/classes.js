@@ -1,8 +1,20 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
+var storage = multer.diskStorage({
+	destination: function(req, file, callback) {
+		callback(null, './uploads/materials');
+	},
+	filename: function(req, file, callback) {
+		callback(null, file.fieldname+ '-' + Date.now());
+	}
+});
+
+var upload = multer({storage: storage}).array('material', 2);
 
 Class = require('../models/class');
 Student = require('../models/student');
+Material = require('../models/material');
 
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
@@ -28,6 +40,22 @@ router.get('/:id', function(req, res, next){
 			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent });
 		}
 	})
+});
+
+router.get('/:id/materials', function(req, res, next) {
+	res.render('classes/materials', null);
+});
+
+router.post('/:id/upload', function(req, res, next) {
+	upload(req, res, function(err) {
+		if(err) {
+			res.send(err);
+		}
+		else {
+
+			res.end("File is uploaded!");
+		}
+	});
 });
 
 router.get('/:id/lessons', function(req, res, next){
