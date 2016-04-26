@@ -25,13 +25,6 @@ router.post('/:id/update', function(req, res, next) {
 	var last_name = req.body.last_name;
 	var email = req.body.email;
 	var username = req.body.username;
-	/*var street_address = req.body.street_address;
-	var city = req.body.city;
-	var state = req.body.state;
-	var password = req.body.password;
-	var password2 = req.body.password2;
-	var type = req.body.type;
-	var zip = req.body.zip;*/
 
 	User.findById(req.params.id, function(err, user) {
 		if(err) {
@@ -60,40 +53,6 @@ router.post('/:id/update', function(req, res, next) {
 			});
 		}
 	});
-
-		// User.findById(user_id, function(err, user) {
-		// 	if(err) {
-		// 		res.send(err);
-		// 	}
-		// 	else {
-		// 		user.username = username;
-		// 		user.email = email;
-		// 		user.save(function(err) {
-		// 			if(err) {
-		// 				res.send(err);
-		// 			}
-		// 			else {
-		// 				res.locals.user = user;
-		// 			}
-		// 		});
-		// 	}
-		// });
-
-		// Student.findOne({user_id: user_id}, function(err, student) {
-		// 	if (err) {
-		// 		res.send(err);
-		// 	}
-		// 	else {
-		// 		student.first_name = first_name;
-		// 		student.last_name = last_name;
-		// 		student.email = email;
-		// 		student.save(function(err) {
-		// 			if(err) {
-		// 				res.send(err);
-		// 			}
-		// 		});
-		// 	}
-		// });
 
 });
 

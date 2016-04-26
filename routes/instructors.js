@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var assign = require('object-assign');
+var only = require('only');
 
 Class = require('../models/class');
 Instructor = require('../models/instructor');
@@ -18,46 +20,33 @@ router.get('/:id/profile', function(req, res, next) {
 });
 
 router.post('/:id/update', function(req, res, next) {
-	var user_id = req.params.id;
-	var first_name = req.body.first_name;
-	var last_name = req.body.last_name;
-	var email = req.body.email;
-	var username = req.body.username;
-
-	User.findById(user_id, function(err, user) {
+	User.findById(req.params.id, function(err, user) {
 		if(err) {
 			res.send(err);
 		}
 		else {
-			user.username = username;
-			user.email = email;
+			assign(user, user_params(req));
 			user.save(function(err) {
 				if(err) {
 					res.send(err);
 				}
 				else {
-					res.locals.user = user;				
+					Instructor.findOne({user_id: req.params.id}, function(err, instructor) {
+						assign(instructor, instructor_params(req));
+						instructor.save(function(err) {
+							if(err) {
+								res.send(err);
+							}
+							else {
+								res.locals.user = user;
+								res.redirect('/');
+							}
+						});
+					});
 				}
 			});
 		}
 	});
-
-	Instructor.findOne({user_id: user_id}, function(err, instructor) {
-		if(err) {
-			res.send(err);
-		}
-		else {
-			instructor.first_name = first_name;
-			instructor.last_name = last_name;
-			instructor.email = email;
-			instructor.save(function(err) {
-				if(err) {
-					res.send(err);
-				}
-			});
-		}
-	});
-	res.redirect('/');
 });
 
 router.get('/classes', ensureAuthenticated, function(req, res, next){
@@ -233,6 +222,14 @@ function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	res.redirect('/');
+}
+
+function instructor_params(req) {
+	return only(req.body, 'first_name last_name email');
+}
+
+function user_params(req) {
+	return only(req.body, 'username email')
 }
 
 module.exports = router;
