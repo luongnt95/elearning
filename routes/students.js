@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var assign = require('object-assign');
+var only = require('only');
 
 Class = require('../models/class');
 Student = require('../models/student');
@@ -30,43 +32,69 @@ router.post('/:id/update', function(req, res, next) {
 	var password2 = req.body.password2;
 	var type = req.body.type;
 	var zip = req.body.zip;*/
-	
 
-	User.findById(user_id, function(err, user) {
+	User.findById(req.params.id, function(err, user) {
 		if(err) {
 			res.send(err);
 		}
 		else {
-			user.username = username;
-			user.email = email;
+			assign(user, user_params(req));
 			user.save(function(err) {
 				if(err) {
 					res.send(err);
 				}
 				else {
-					res.locals.user = user;
+					Student.findOne({user_id: req.params.id}, function(err, student) {
+						assign(student, student_params(req));
+						student.save(function(err) {
+							if(err) {
+								res.send(err);
+							}
+							else {
+								res.locals.user = user;
+								res.redirect('/');
+							}
+						});
+					});
 				}
 			});
 		}
 	});
 
-	Student.findOne({user_id: user_id}, function(err, student) {
-		if (err) {
-			res.send(err);
-		}
-		else {
-			student.first_name = first_name;
-			student.last_name = last_name;
-			student.email = email;
-			student.save(function(err) {
-				if(err) {
-					res.send(err);
-				}
-			});
-		}
-	});
+		// User.findById(user_id, function(err, user) {
+		// 	if(err) {
+		// 		res.send(err);
+		// 	}
+		// 	else {
+		// 		user.username = username;
+		// 		user.email = email;
+		// 		user.save(function(err) {
+		// 			if(err) {
+		// 				res.send(err);
+		// 			}
+		// 			else {
+		// 				res.locals.user = user;
+		// 			}
+		// 		});
+		// 	}
+		// });
 
-	res.redirect('/');
+		// Student.findOne({user_id: user_id}, function(err, student) {
+		// 	if (err) {
+		// 		res.send(err);
+		// 	}
+		// 	else {
+		// 		student.first_name = first_name;
+		// 		student.last_name = last_name;
+		// 		student.email = email;
+		// 		student.save(function(err) {
+		// 			if(err) {
+		// 				res.send(err);
+		// 			}
+		// 		});
+		// 	}
+		// });
+
 });
 
 router.get('/classes', ensureAuthenticated, function(req, res, next){
@@ -100,6 +128,14 @@ function ensureAuthenticated(req, res, next) {
 		return next();
 	}
 	res.redirect('/');
+}
+
+function student_params(req) {
+	return only(req.body, 'first_name last_name email');
+}
+
+function user_params(req) {
+	return only(req.body, 'username email')
 }
 
 module.exports = router;
