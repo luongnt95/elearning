@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+Material = require('../models/material');
 
 var classSchema = mongoose.Schema({
 	title:{
@@ -20,7 +21,8 @@ var classSchema = mongoose.Schema({
 		lesson_body:{
 			type: String
 		}
-	}]
+	}],
+	materials: [Material]
 });
 
 var Class = module.exports = mongoose.model('Class', classSchema);

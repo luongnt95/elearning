@@ -1,7 +1,7 @@
 <form class="uploadForm" 
-			action="/classes/:id/upload"
+			action="/classes/{{classDetail.id}}/upload"
 			enctype="multipart/form-data"
 			method="post">
-	<input type="file" name="material" multiple>
+	<input type="file" name="material" id="material" multiple>
 	<input type="submit" value="Upload" name="submit">
 </form>

@@ -1,16 +1,27 @@
 var express = require('express');
 var router = express.Router();
-var multer = require('multer');
-var storage = multer.diskStorage({
-	destination: function(req, file, callback) {
-		callback(null, './uploads/materials');
-	},
-	filename: function(req, file, callback) {
-		callback(null, file.fieldname+ '-' + Date.now());
-	}
-});
+// var multer = require('multer');
+// var uploader = require('../helpers/uploader');
 
-var upload = multer({storage: storage}).array('material', 2);
+var cloudinary = require('cloudinary');
+
+
+cloudinary.config({
+ cloud_name: 'elearning',
+ api_key: '813799211176374',
+ api_secret: 'e9rMy7uvZDBDBePhn8tobMGDVeo'
+})
+
+// var storage = multer.diskStorage({
+// 	destination: function(req, file, callback) {
+// 		callback(null, './uploads/materials');
+// 	},
+// 	filename: function(req, file, callback) {
+// 		callback(null, file.fieldname+ '-' + Date.now());
+// 	}
+// });
+
+// var upload = multer({storage: storage}).array('material', 2);
 
 Class = require('../models/class');
 Student = require('../models/student');
@@ -28,33 +39,87 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:id', function(req, res, next){
-	Class.getClassesById([req.params.id], function(err, classDetail){
+	Class.findById(req.params.id, function(err, classDetail){
 		if (err) {
-			console.log(err);
 			res.send(err);
-		} else {						
+		} 
+		else {
 			isStudent = false;
 			if (req.user){
 				isStudent = req.user.type == 'student';
 			}
-			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent });
+			res.render('classes/detail', {"classDetail": classDetail, "isStudent": isStudent });
 		}
-	})
+	});
 });
 
 router.get('/:id/materials', function(req, res, next) {
-	res.render('classes/materials', null);
-});
-
-router.post('/:id/upload', function(req, res, next) {
-	upload(req, res, function(err) {
+	Class.findById(req.params.id, function(err, classDetail) {
 		if(err) {
 			res.send(err);
 		}
 		else {
-
-			res.end("File is uploaded!");
+			res.render('classes/materials', {"classDetail": classDetail});
 		}
+	});
+});
+
+// router.post('/:id/upload', function(req, res, next) {
+// 	upload(req, res, function(err) {
+// 		if(err) {
+// 			res.send(err);
+// 		}
+// 		else {
+// 			var files = req.files;
+			
+// 			for(file in files) {
+// 				var material = {class_id: req.params.id, path: file.destination, mimetype: file.mimetype, filename: file.fieldname+ '-' + Date.now()};
+// 				Material.create(material, function(err, material) {
+// 					if(err) {
+// 						res.send(err);
+// 					}
+// 					else {
+// 						res.end('Upload is completed!');
+// 					}
+// 				});
+// 			}
+// 		}
+// 	});
+// });
+
+router.post('/:id/upload', function(req, res, next) {
+	Class.findById(req.params.id, function(err, klass) {
+		if(err)	{
+			res.send(err);
+		}
+		else {
+			var files = req.files;
+	
+			for(i in files) {
+				var file = files[i];
+				cloudinary.uploader.upload(
+					file.path, 
+					function(result) {
+						console.log(result);
+					},
+				{
+					public_id: klass._id + '-' + Date.now()
+				});
+			}
+			
+			res.end("completed");
+			// uploader.upload(klass, req.file, function(klass) {
+			// 	klass.save(function(err, klass) {
+			// 		if(err) {
+			// 			res.send(err);
+			// 		}
+			// 		else {
+			// 			res.end(klass);
+			// 		}
+			// 	});
+			// });
+		}
+
 	});
 });
 

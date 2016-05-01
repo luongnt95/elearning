@@ -10,6 +10,8 @@ var Student = require('../models/student');
 
 var Instructor = require('../models/instructor');
 
+var uploader = require('../uploaders/avatarUploader');
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
@@ -87,9 +89,12 @@ router.post('/signup', function(req, res, next){
 					user_id: newUser.id
 				});
 
-				User.saveStudent(newUser, newStudent, function(err, user){
-					console.log('Student created');
+				uploader.upload(newUser, req.files['avatar'][0], function(user) {
+					User.saveStudent(user, newStudent, function(err, user){
+						console.log('Student created');
+					});
 				});
+
 			} catch(err){
 				console.log(err);
 			}
