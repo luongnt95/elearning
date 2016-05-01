@@ -2,10 +2,13 @@ var express = require('express');
 var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
+var uploader = require('../uploaders/avatarUploader');
 
 Class = require('../models/class');
 Student = require('../models/student');
 User = require('../models/user');
+
+
 
 router.get('/:id/profile', function(req, res, next) {
 	var user_id = req.params.id;
@@ -20,46 +23,40 @@ router.get('/:id/profile', function(req, res, next) {
 });
 
 router.post('/:id/update', function(req, res, next) {
-	var user_id = req.params.id;
-	var first_name = req.body.first_name;
-	var last_name = req.body.last_name;
-	var email = req.body.email;
-	var username = req.body.username;
-
 	User.findById(req.params.id, function(err, user) {
 		if(err) {
 			res.send(err);
 		}
 		else {
 			assign(user, user_params(req));
-			user.save(function(err) {
-				if(err) {
-					res.send(err);
-				}
-				else {
-					Student.findOne({user_id: req.params.id}, function(err, student) {
-						assign(student, student_params(req));
-						student.save(function(err) {
-							if(err) {
-								res.send(err);
-							}
-							else {
-								res.locals.user = user;
-								res.redirect('/');
-							}
+			uploader.upload(user, req.files['avatar'][0], function(user) {
+				user.save(function(err) {
+					if(err) {
+						res.send(err);
+					}
+					else {
+						Student.findOne({user_id: req.params.id}, function(err, student) {
+							assign(student, student_params(req));
+							student.save(function(err) {
+								if(err) {
+									res.send(err);
+								}
+								else {
+									res.locals.user = user;
+									res.redirect('/');
+								}
+							});
 						});
-					});
-				}
+					}
+				});
 			});
 		}
 	});
-
 });
 
 router.get('/classes', ensureAuthenticated, function(req, res, next){
 	Student.getStudentByUsername(req.user.username, function(err, student){
 		if (err) {
-			console.log(err);
 			res.send(err);
 		} else {
 			res.render('students/classes', {"student": student});

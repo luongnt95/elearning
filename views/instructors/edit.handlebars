@@ -1,6 +1,6 @@
 <h2>Your profile</h2>
 
-<form id='regForm' action='/instructors/{{user.id}}/update' method='post' class="ui form">
+<form id='regForm' action='/instructors/{{user.id}}/update' method='post' class="ui form" enctype="multipart/form-data">
   <div class="field">
     <label for="first_name">First Name:</label>
     <input type="text" name="first_name" placeholder="First Name" value="{{instructor.first_name}}">
@@ -17,6 +17,6 @@
     <label>UserName:</label>
     <input type="text" name="username" placeholder="User name" value="{{user.username}}" >
   </div>
-
+  <input id="avatar" type="file" name="avatar">
   <button class="ui primary button" type="submit">Submit</button>
 </form>

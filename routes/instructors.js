@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
+var uploader = require('../uploaders/avatarUploader');
 
 Class = require('../models/class');
 Instructor = require('../models/instructor');
@@ -26,24 +27,26 @@ router.post('/:id/update', function(req, res, next) {
 		}
 		else {
 			assign(user, user_params(req));
-			user.save(function(err) {
-				if(err) {
-					res.send(err);
-				}
-				else {
-					Instructor.findOne({user_id: req.params.id}, function(err, instructor) {
-						assign(instructor, instructor_params(req));
-						instructor.save(function(err) {
-							if(err) {
-								res.send(err);
-							}
-							else {
-								res.locals.user = user;
-								res.redirect('/');
-							}
+			uploader.upload(user, req.files['avatar'][0], function(user) {
+				user.save(function(err) {
+					if(err) {
+						res.send(err);
+					}
+					else {
+						Instructor.findOne({user_id: req.params.id}, function(err, instructor) {
+							assign(instructor, instructor_params(req));
+							instructor.save(function(err) {
+								if(err) {
+									res.send(err);
+								}
+								else {
+									res.locals.user = user;
+									res.redirect('/');
+								}
+							});
 						});
-					});
-				}
+					}
+				});
 			});
 		}
 	});
