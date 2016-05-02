@@ -1,17 +1,15 @@
-var cloudinary = require('cloudinary');
 var config = require('../config/config');
+var cloudinary = require('cloudinary');
 
 cloudinary.config(config.cloudinary);
 
 exports.upload = function(klass, file, callback) {
-  if (!file)
-  	console.log("No");
-    return callback(klass);
-
-  options = { public_id: 'materials/' + klass._id };
-  console.log("yes");
+  if(!file) {
+  	return callback(klass);
+  }
+  options = {public_id: klass.id + '-' + Date.now()};
   cloudinary.uploader.upload(file.path, function(material) {
-    klass.materials.push({url: material.url});
+    klass.materials.push({url: material.url, name: file.originalname});
     callback(klass);
   }, options);
 }

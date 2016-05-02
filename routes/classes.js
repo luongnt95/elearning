@@ -1,16 +1,15 @@
 var express = require('express');
 var router = express.Router();
-// var multer = require('multer');
-// var uploader = require('../helpers/uploader');
+var uploader = require('../uploaders/materialUploader');
 
-var cloudinary = require('cloudinary');
+// var cloudinary = require('cloudinary');
 
 
-cloudinary.config({
- cloud_name: 'elearning',
- api_key: '813799211176374',
- api_secret: 'e9rMy7uvZDBDBePhn8tobMGDVeo'
-})
+// cloudinary.config({
+//  cloud_name: 'elearning',
+//  api_key: '813799211176374',
+//  api_secret: 'e9rMy7uvZDBDBePhn8tobMGDVeo'
+// })
 
 // var storage = multer.diskStorage({
 // 	destination: function(req, file, callback) {
@@ -54,38 +53,15 @@ router.get('/:id', function(req, res, next){
 });
 
 router.get('/:id/materials', function(req, res, next) {
-	Class.findById(req.params.id, function(err, classDetail) {
+	Class.findById(req.params.id, function(err, klass) {
 		if(err) {
 			res.send(err);
 		}
 		else {
-			res.render('classes/materials', {"classDetail": classDetail});
+			res.render('classes/materials', {"klass": klass});
 		}
 	});
 });
-
-// router.post('/:id/upload', function(req, res, next) {
-// 	upload(req, res, function(err) {
-// 		if(err) {
-// 			res.send(err);
-// 		}
-// 		else {
-// 			var files = req.files;
-			
-// 			for(file in files) {
-// 				var material = {class_id: req.params.id, path: file.destination, mimetype: file.mimetype, filename: file.fieldname+ '-' + Date.now()};
-// 				Material.create(material, function(err, material) {
-// 					if(err) {
-// 						res.send(err);
-// 					}
-// 					else {
-// 						res.end('Upload is completed!');
-// 					}
-// 				});
-// 			}
-// 		}
-// 	});
-// });
 
 router.post('/:id/upload', function(req, res, next) {
 	Class.findById(req.params.id, function(err, klass) {
@@ -93,31 +69,23 @@ router.post('/:id/upload', function(req, res, next) {
 			res.send(err);
 		}
 		else {
-			var files = req.files;
+			var files = req.files['material'];
 	
 			for(i in files) {
 				var file = files[i];
-				cloudinary.uploader.upload(
-					file.path, 
-					function(result) {
-						console.log(result);
-					},
-				{
-					public_id: klass._id + '-' + Date.now()
+				uploader.upload(klass, file, function(klass) {
+					klass.save(function(err, klass) {
+						if(err) {
+							res.send(err);
+						}
+						else {
+							console.log("ok");
+						}
+					});
 				});
 			}
 			
-			res.end("completed");
-			// uploader.upload(klass, req.file, function(klass) {
-			// 	klass.save(function(err, klass) {
-			// 		if(err) {
-			// 			res.send(err);
-			// 		}
-			// 		else {
-			// 			res.end(klass);
-			// 		}
-			// 	});
-			// });
+			res.redirect('/classes/' + req.params.id + '/materials');
 		}
 
 	});

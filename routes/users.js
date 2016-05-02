@@ -115,7 +115,7 @@ router.post('/signup', function(req, res, next){
 
 			uploader.upload(newUser, req.files['avatar'][0], function(user) {
 				User.saveInstructor(user, newInstructor, function(err, user){
-					console.log('Student created');
+					console.log('Instructor created');
 				});
 			});
 		}

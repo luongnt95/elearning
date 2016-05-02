@@ -1,5 +1,11 @@
+{{#each klass.materials}}
+	<div>
+		<a href="{{this.url}}">{{this.name}}</a>
+	</div>
+{{/each}}
+
 <form class="uploadForm" 
-			action="/classes/{{classDetail.id}}/upload"
+			action="/classes/{{klass.id}}/upload"
 			enctype="multipart/form-data"
 			method="post">
 	<input type="file" name="material" id="material" multiple>
