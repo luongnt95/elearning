@@ -28,6 +28,7 @@ var userSchema = mongoose.Schema({
 	type:{
 		type: String
 	},
+	avatar_url: {type: String}
 });
 
 var User = module.exports = mongoose.model('User', userSchema);

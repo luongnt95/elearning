@@ -20,7 +20,8 @@ var classSchema = mongoose.Schema({
 		lesson_body:{
 			type: String
 		}
-	}]
+	}],
+	materials: [{url: String, name: String}]
 });
 
 var Class = module.exports = mongoose.model('Class', classSchema);

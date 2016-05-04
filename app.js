@@ -12,11 +12,11 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var multer = require('multer');
-
+var upload = multer({ dest: 'public/uploads/' })
 mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
 
 ////'mongodb://localhost/elearn'
-//mongoose.connect('mongodb://localhost/elearn');
+// mongoose.connect('mongodb://localhost/elearn');
 var db = mongoose.connection;
 async = require('async');
 
@@ -34,7 +34,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
 
 // Handle File upload
-var upload = multer({dest:'uploads/'});
+app.use(upload.fields([{name: 'avatar', maxCount: 1}, {name: 'material', maxCount: 2}]));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -43,6 +43,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // Handle Express Session
 app.use(session({

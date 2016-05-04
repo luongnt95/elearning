@@ -1,6 +1,6 @@
 <h2> Create an account </h2>
 
-<form id='regForm' action='/users/signup' method='post' class="ui form">
+<form id='regForm' action='/users/signup' method='post' class="ui form" enctype="multipart/form-data">
   <div class="field">
       <label>Account Type</label>
       <select name="type" class="ui fluid dropdown">
@@ -32,6 +32,6 @@
     <label>Password Confimation:</label>
     <input type="password" name="password2" placeholder="PasswordConfimation" >
   </div>
-
+  <input id="avatar" type="file" name="avatar">
   <button class="ui primary button" type="submit">Submit</button>
 </form>
