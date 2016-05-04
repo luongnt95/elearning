@@ -1,10 +1,22 @@
 <h3> Classes </h3>
 
-	{{#each classes}}
-		<div class="col_4 block">
-			<h4> {{title}} </h4>
-			<p>{{{description}}} </p>
-			<p> Instructor: <strong> {{instructor}} </strong></p>
-			<a class="button" href="/classes/{{_id}}"> Class Details </a>
-		</div>
-	{{/each}}
+<div class="ui row">
+  {{#each classes}}
+    <a class="ui fluid card" href="/classes/{{_id}}" style="margin-bottom: 1em;">
+      <div class="content">
+        <div class="header">{{title}}</div>
+        <div class="meta">
+
+        </div>
+        <div class="description">
+          <p>{{{description}}}</p>
+        </div>
+      </div>
+      <div class="extra content">
+        <div class="right floated author">
+          <img class="ui avatar image" src="{{_instructor.avatar_url}}"> {{_instructor.name}}
+        </div>
+      </div>
+    </a>
+  {{/each}}
+</div>

@@ -133,9 +133,10 @@ router.post('/classes/new', ensureAuthenticated, function(req, res){
 	var newClass = new Class({
 		title: req.body.class_title,
 		description : req.body.class_description,
-		instructor: req.user.username
+		// instructor: req.user.username
+		_instructor: {name: req.user.username, avatar_url: req.user.avatar_url}
 	});
-	
+
 	Class.saveClass(newClass, function(err, newClass){
 		if (err) throw err;
 		console.log("class :  ", newClass);

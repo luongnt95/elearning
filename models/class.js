@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var User = require('../models/user');
 
 var classSchema = mongoose.Schema({
 	title:{
@@ -7,9 +8,10 @@ var classSchema = mongoose.Schema({
 	description: {
 		type: String
 	},
-	instructor: {
-		type: String
-	},
+	// instructor: {
+	// 	type: String
+	// },
+	_instructor: {name: String, avatar_url: String},
 	lessons:[{
 		lesson_number: {
 			type: Number
