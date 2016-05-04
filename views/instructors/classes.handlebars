@@ -1,32 +1,29 @@
-<h2> {{instructor.first_name}}'s Classes </h2>
+<h2> {{instructor.username}}'s Classes </h2>
 
-<a href="/instructors/classes/new"> New Class </a>
+{{#each instructor.classes}}
+	<div class="ui segment">
+	  <div class="ui item">
+	    <div class="content">
+	      <a class="ui header">{{{class_title}}}</a>
+	      <div class="meta">
+	        <span class="price">ID: {{{class_id}}}</span>
+	      </div>
+	      <div class="description">
+	        <p>{{{class_description}}}</p>
+	      </div>
+	      <div class="extra">
+	      	<a class="ui blue label" href="/classes/{{class_id}}/lessons"> View Lessons </a>
+	        <a class="ui blue label" href="/instructors/classes/{{class_id}}/lessons/new"> Added Lesson </a>
+	        <a class="ui blue label" href="/instructors/classes/{{class_id}}/edit"> Edit Class </a>
+	        <div class="ui white label">
+	        <form method = "post" action="/instructors/classes/{{class_id}}/drop">
+						<input type="submit" style="background-color: red;" value="Drop Class" >
+					</form>
+					</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+{{/each}}
 
-<table cellspacing="0" cellpadding="0">
-	<thread>
-		<tr>
-			<th> Class ID </th>
-			<th> Class Name </th>
-			<th> </th>
-			<th> </th>
-		</tr>
-		<tbody>
-			{{#each instructor.classes}}				
-				<tr>
-					<th> {{class_id}}</th>
-					<th> {{{class_title}}} </th>
-					<th> <a href="/classes/{{class_id}}/lessons"> View Lessons </a> </th>
-					<th> <a href="/instructors/classes/{{class_id}}/lessons/new"> Added Lesson </a> </th>
-					<th> <a href="/instructors/classes/{{class_id}}/edit"> Edit Class </a> </th>
-					<th>
-						<form method = "post" action="/instructors/classes/{{class_id}}/drop">
-							<div>
-								<input type="submit" class="button" value="Drop Class" >
-							</div>
-						</form>
-					</th>
-				</tr>
-			{{/each}}
-		</tbody>
-	</thread>
-</table>
+<a class="ui blue button" href="/instructors/classes/new"> New Class </a>
