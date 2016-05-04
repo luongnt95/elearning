@@ -24,6 +24,7 @@ var uploader = require('../uploaders/materialUploader');
 
 Class = require('../models/class');
 Student = require('../models/student');
+Material = require('../models/material');
 
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
