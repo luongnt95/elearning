@@ -57,7 +57,11 @@ router.get('/:id/materials', function(req, res, next) {
 			res.send(err);
 		}
 		else {
-			res.render('classes/materials', {"klass": klass});
+			isStudent = false;
+			if(req.user) {
+				isInstructor = req.user.type == 'instructor';
+			}
+			res.render('classes/materials', {"klass": klass, "isInstructor": isInstructor});
 		}
 	});
 });
