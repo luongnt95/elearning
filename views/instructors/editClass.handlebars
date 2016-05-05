@@ -1,16 +1,17 @@
+<div class="ui segment">
 <h2> EditClass </h2>
 
-<form id="regForm" method = "post" action="/instructors/classes/{{class._id}}/edit">
-	<div>
+<form id="regForm" class="ui form" method = "post" action="/instructors/classes/{{class._id}}/edit">
+	<div class="field">
 		<label> Class Title </label>
 		<input type="text" name = "class_title" value="{{class.title}}">
 	</div>
-	<div>
+	<div class="field">
 		<label> Class Description </label>
 		<textarea id="tinytextarea" name="class_description"> {{class.description}} </textarea>
 	</div>
 
-
+	<div class="ui segment">
 	<table cellspacing="0" cellpadding="0">
 		<thread>
 			<tr>
@@ -19,7 +20,7 @@
 				<th> </th>
 			</tr>
 			<tbody>
-				{{#each class.lessons}}				
+				{{#each class.lessons}}
 					<tr>
 						<th> {{lesson_number}}</th>
 						<th> {{{lesson_title}}} </th>
@@ -29,9 +30,11 @@
 			</tbody>
 		</thread>
 	</table>
-	
+	</div>
+
 	<div>
-		<input type="submit" class="button" value="Save changes" >
+		<input type="submit" class="ui blue button" value="Save changes" >
 	</div>
 </form>
+</div>
 
