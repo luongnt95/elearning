@@ -59,7 +59,6 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 			res.send(err);
 		} else {
 			//console.log(instructor.classes);
-			
 			res.render('instructors/classes', {"instructor": instructor});
 		}
 	});
@@ -75,9 +74,9 @@ router.post('/classes/register', function(req, res){
 	Instructor.register(info, function(err, instructor){
 		if (err) throw err;
 		console.log(instructor);
+		req.flash('success', 'You are now registed as an Instructor');
+		res.redirect('/instructors/classes');
 	});
-	req.flash('success', 'You are now registed as an Instructor');
-	res.redirect('/instructors/classes');
 });
 
 router.get('/classes/:id/lessons/new', ensureAuthenticated, function(req, res, next){	
@@ -129,7 +128,7 @@ router.get('/classes/new', ensureAuthenticated, function(req, res, next){
 	res.render('instructors/newClass');	
 });
 
-router.post('/classes/new', ensureAuthenticated, function(req, res){
+router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 	var newClass = new Class({
 		title: req.body.class_title,
 		description : req.body.class_description,
@@ -148,10 +147,10 @@ router.post('/classes/new', ensureAuthenticated, function(req, res){
 		Instructor.saveClass(info, function(err, instructor){
 			if (err) throw err;
 			console.log(instructor);
+			req.flash('success', 'You are added a new class');
+			res.redirect('/instructors/classes');
 		});
 	});
-	req.flash('success', 'You are added a new class');
-	res.redirect('/instructors/classes');
 });
 
 router.get('/classes/:id/edit', ensureAuthenticated, function(req, res, next){	
@@ -161,7 +160,7 @@ router.get('/classes/:id/edit', ensureAuthenticated, function(req, res, next){
 	});
 });
 
-router.post('/classes/:id/edit', ensureAuthenticated, function(req, res){	
+router.post('/classes/:id/update', ensureAuthenticated, function(req, res){	
 	var info = {
 		instructor_username: req.user.username,
 		class_id : req.params.id,
@@ -183,11 +182,11 @@ router.post('/classes/:id/edit', ensureAuthenticated, function(req, res){
 			instructor.save(function(err, instructor){
 				if (err) throw err;
 				//console.log("Instructor update:  ", instructor);
+					req.flash('success', 'You are added a new class');
+					res.redirect('/instructors/classes');
 			});
 		});
 	});
-	req.flash('success', 'You are added a new class');
-	res.redirect('/instructors/classes');
 });
 
 router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){	
@@ -214,11 +213,11 @@ router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){
 			instructor.save(function(err, instructor){
 				if (err) throw err;
 				console.log("Instructor update:  ", instructor);
+				req.flash('success', 'You are added a new class');
+				res.redirect('/instructors/classes');
 			});
 		});
 	});
-	req.flash('success', 'You are added a new class');
-	res.redirect('/instructors/classes');
 });
 
 function ensureAuthenticated(req, res, next) {
