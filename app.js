@@ -15,7 +15,6 @@ var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' })
 mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
 
-////'mongodb://localhost/elearn'
 // mongoose.connect('mongodb://localhost/elearn');
 var db = mongoose.connection;
 async = require('async');

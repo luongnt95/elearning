@@ -170,7 +170,8 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	Class.updateClass(info, function(err, newClass){
 		if (err) throw err;
 		//console.log("class :  ", newClass);
-		Instructor.getInstructorById(req.user._id, function(err, instructor){
+		console.log(req.user.id);
+		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
 			console.log("Instructor :  ", instructor);
 			for ($i=0; $i<instructor.classes.length; $i++) {
