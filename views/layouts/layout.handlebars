@@ -35,13 +35,11 @@
     <a class="item" href="/">Home</a>
     <a class="item" href="/classes">Classes</a>
     <div class="right menu">
+      {{#if user}}
       <a class="item" href="/{{user.type}}s/{{user._id}}/profile"> <img class="ui avatar image" src="{{user.avatar_url}}">
-        {{#if user}}
           <span>{{user.username}}</span>
-        {{else}}
-          <span>Username</span>
-        {{/if}}
       </a>
+      {{/if}}
     </div>
   </div>
 
