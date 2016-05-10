@@ -51,7 +51,7 @@ router.post('/signup', function(req, res, next){
 		console.log(err);
 	}
 
-	if (errors){		
+	if (errors){
 		res.render('users/signup', {
 			errors: errors,
 			first_name: first_name,
@@ -70,34 +70,36 @@ router.post('/signup', function(req, res, next){
 			email: email,
 			username: username,
 			password: password,
+			avatar_url: '/images/default_avatar.png',
 			type: type
 		});
 
 		if (type == 'student'){
-			try{				
-				var newStudent = new Student({
-					first_name: first_name,
-					last_name: last_name,
-					address: [{
-						street_address: street_address,
-						city: city,
-						state: state,
-						zip: zip
-					}],
-					email: email,
-					username: username,
-					user_id: newUser.id
-				});
+			var newStudent = new Student({
+				first_name: first_name,
+				last_name: last_name,
+				address: [{
+					street_address: street_address,
+					city: city,
+					state: state,
+					zip: zip
+				}],
+				email: email,
+				username: username,
+				user_id: newUser.id
+			});
 
-				uploader.upload(newUser, req.files['avatar'][0], function(user) {
-					User.saveStudent(user, newStudent, function(err, user){
-						console.log('Student created');
-					});
-				});
-
-			} catch(err){
+			var avatar = null;
+			try {
+				avatar = req.files['avatar'][0];
+			} catch(err) {
 				console.log(err);
 			}
+			uploader.upload(newUser, avatar, function(user) {
+				User.saveStudent(user, newStudent, function(err, user){
+					console.log('Student created');
+				});
+			});
 		} else {
 			var newInstructor = new Instructor({
 				first_name: first_name,
@@ -113,7 +115,14 @@ router.post('/signup', function(req, res, next){
 				user_id: newUser.id
 			});
 
-			uploader.upload(newUser, req.files['avatar'][0], function(user) {
+			var avatar = null;
+			try {
+				avatar = req.files['avatar'][0];
+			} catch(err) {
+				console.log(err);
+			}
+			uploader.upload(newUser, avatar, function(user) {
+				console.log("No");
 				User.saveInstructor(user, newInstructor, function(err, user){
 					console.log('Instructor created');
 				});
@@ -156,7 +165,7 @@ passport.deserializeUser(function(id, done) {
   User.findById(id, function(err, user) {
     done(err, user);
   });
-}); 
+});
 
 passport.use(new LocalStrategy(
 	function(username, password, done) {
@@ -193,7 +202,7 @@ passport.use(new RememberMeStrategy(
     consumeRememberMeToken(token, function(err, uid) {
       if (err) { return done(err); }
       if (!uid) { return done(null, false); }
-      
+
       findById(uid, function(err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false); }
@@ -202,7 +211,7 @@ passport.use(new RememberMeStrategy(
     });
   },
   issueToken
-)); 
+));
 
 function issueToken(user, done) {
   var token = utils.randomString(64);
@@ -212,12 +221,12 @@ function issueToken(user, done) {
   });
 }
 
-router.post('/login', 
+router.post('/login',
   passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }),
   function(req, res, next) {
     // Issue a remember me cookie if the option was checked
     if (!req.body.remember_me) { return next(); }
-    
+
     issueToken(req.user, function(err, token) {
       if (err) { return next(err); }
       res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 });
@@ -232,7 +241,7 @@ router.post('/login',
  	passport.authenticate('local', {
     	failureRedirect: '/',
     	failureFlash: 'Invalid username or password'
-	}), 
+	}),
 	function(req, res, next) {
 		console.log('Authentication Successful');
 		req.flash('success', 'You are logged in ');

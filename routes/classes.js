@@ -40,13 +40,13 @@ router.get('/:id', function(req, res, next){
 	Class.findById(req.params.id, function(err, classDetail){
 		if (err) {
 			res.send(err);
-		} 
+		}
 		else {
 			isStudent = false;
 			if (req.user){
 				isStudent = req.user.type == 'student';
 			}
-			res.render('classes/detail', {"classDetail": classDetail, "isStudent": isStudent });
+			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent });
 		}
 	});
 });
@@ -57,7 +57,11 @@ router.get('/:id/materials', function(req, res, next) {
 			res.send(err);
 		}
 		else {
-			res.render('classes/materials', {"klass": klass});
+			isStudent = false;
+			if(req.user) {
+				isInstructor = req.user.type == 'instructor';
+			}
+			res.render('classes/materials', {"klass": klass, "isInstructor": isInstructor});
 		}
 	});
 });
@@ -69,7 +73,7 @@ router.post('/:id/upload', function(req, res, next) {
 		}
 		else {
 			var files = req.files['material'];
-	
+
 			for(i in files) {
 				var file = files[i];
 				uploader.upload(klass, file, function(klass) {
@@ -83,7 +87,7 @@ router.post('/:id/upload', function(req, res, next) {
 					});
 				});
 			}
-			
+
 			res.redirect('/classes/' + req.params.id + '/materials');
 		}
 
@@ -106,7 +110,7 @@ router.get('/:id/lessons/:lesson_id', function(req, res, next){
 		if (err) {
 			console.log(err);
 			res.send(err);
-		} else {			
+		} else {
 			lesson = {
 				lesson_title : "Could not find this lesson"
 			};

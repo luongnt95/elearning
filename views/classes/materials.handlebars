@@ -4,10 +4,12 @@
 	</div>
 {{/each}}
 
-<form class="uploadForm" 
-			action="/classes/{{klass.id}}/upload"
-			enctype="multipart/form-data"
-			method="post">
-	<input type="file" name="material" id="material" multiple>
-	<input type="submit" value="Upload" name="submit">
-</form>
+{{#if isInstructor}}
+	<form class="uploadForm" 
+				action="/classes/{{klass.id}}/upload"
+				enctype="multipart/form-data"
+				method="post">
+			<input type="file" name="material" id="material" multiple>
+			<input type="submit" value="Upload" name="submit">
+	</form>
+{{/if}}

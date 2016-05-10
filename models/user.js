@@ -14,7 +14,7 @@ var userSchema = mongoose.Schema({
 		type: String,
 		bcrypt: true
 	},
-	avatar:{
+	avatar_url:{
 		type: String
 	},
 	created_at:{
