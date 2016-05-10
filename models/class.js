@@ -8,9 +8,9 @@ var classSchema = mongoose.Schema({
 	description: {
 		type: String
 	},
-	// instructor: {
-	// 	type: String
-	// },
+	image_url: {
+		type: String
+	},
 	_instructor: {name: String, avatar_url: String},
 	lessons:[{
 		lesson_number: {

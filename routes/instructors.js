@@ -3,6 +3,7 @@ var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
 var uploader = require('../uploaders/avatarUploader');
+var classImageUploader = require('../uploaders/classImageUploader')
 
 Class = require('../models/class');
 Instructor = require('../models/instructor');
@@ -70,7 +71,7 @@ router.post('/classes/register', function(req, res){
 		class_id : req.body.class_id,
 		class_title : req.body.class_title
 	}
-	
+
 	Instructor.register(info, function(err, instructor){
 		if (err) throw err;
 		console.log(instructor);
@@ -79,8 +80,8 @@ router.post('/classes/register', function(req, res){
 	});
 });
 
-router.get('/classes/:id/lessons/new', ensureAuthenticated, function(req, res, next){	
-	res.render('instructors/newlesson', {class_id: req.params.id});	
+router.get('/classes/:id/lessons/new', ensureAuthenticated, function(req, res, next){
+	res.render('instructors/newlesson', {class_id: req.params.id});
 });
 
 router.post('/classes/:id/lessons/new', function(req, res){
@@ -120,12 +121,12 @@ router.post('/classes/:id/lessons/new', function(req, res){
 			console.log("lesson :  ", lesson);
 		});
 		req.flash('success', 'You are added a new lesson');
-		res.redirect('/instructors/classes');		
-	}	
+		res.redirect('/instructors/classes');
+	}
 });
 
-router.get('/classes/new', ensureAuthenticated, function(req, res, next){	
-	res.render('instructors/newClass');	
+router.get('/classes/new', ensureAuthenticated, function(req, res, next){
+	res.render('instructors/newClass');
 });
 
 router.post('/classes/new', ensureAuthenticated, function(req, res, next){
@@ -136,31 +137,36 @@ router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 		_instructor: {name: req.user.username, avatar_url: req.user.avatar_url}
 	});
 
-	Class.saveClass(newClass, function(err, newClass){
-		if (err) throw err;
-		console.log("class :  ", newClass);
-		var info = {
-			instructor_username : req.user.username,
-			class_id : newClass._id,
-			class_title : newClass.title
-		}
-		Instructor.saveClass(info, function(err, instructor){
+	var image = req.files['image'][0]
+	console.log(req.files['image'][0]);
+
+	classImageUploader.upload(newClass, image, function(newClass){
+		Class.saveClass(newClass, function(err, newClass){
 			if (err) throw err;
-			console.log(instructor);
-			req.flash('success', 'You are added a new class');
-			res.redirect('/instructors/classes');
+			console.log("class :  ", newClass);
+			var info = {
+				instructor_username : req.user.username,
+				class_id : newClass._id,
+				class_title : newClass.title
+			}
+			Instructor.saveClass(info, function(err, instructor){
+				if (err) throw err;
+				console.log(instructor);
+				req.flash('success', 'You are added a new class');
+				res.redirect('/instructors/classes');
+			});
 		});
-	});
+	})
 });
 
-router.get('/classes/:id/edit', ensureAuthenticated, function(req, res, next){	
+router.get('/classes/:id/edit', ensureAuthenticated, function(req, res, next){
 	Class.getClassesById(req.params.id, function(err, classDetails){
 		if (err) throw err;
-		res.render('instructors/editClass', {"class": classDetails});	
+		res.render('instructors/editClass', {"class": classDetails});
 	});
 });
 
-router.post('/classes/:id/update', ensureAuthenticated, function(req, res){	
+router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	var info = {
 		instructor_username: req.user.username,
 		class_id : req.params.id,
@@ -190,7 +196,7 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	});
 });
 
-router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){	
+router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){
 	var info = {
 		instructor_username: req.user.username,
 		class_id : req.params.id,
