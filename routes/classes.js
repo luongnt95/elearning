@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var uploader = require('../uploaders/materialUploader');
-var classImageUploader = require('../uploaders/classImageUploader')
 
 // var cloudinary = require('cloudinary');
 
