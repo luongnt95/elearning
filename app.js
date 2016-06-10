@@ -13,7 +13,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' })
-mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
+mongoose.connect("mongodb://localhost/elearn");
 
 // mongoose.connect('mongodb://localhost/elearn');
 var db = mongoose.connection;
@@ -33,7 +33,8 @@ app.engine('handlebars', exphbs({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
 
 // Handle File upload
-app.use(upload.fields([{name: 'avatar', maxCount: 1}, {name: 'material', maxCount: 2}]));
+app.use(upload.fields([{name: 'avatar', maxCount: 1}, {name: 'material', maxCount: 10},
+                       {name: 'image', maxCount: 1}]));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
