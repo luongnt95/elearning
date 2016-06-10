@@ -14,6 +14,16 @@
 	{{/each}}
 </ol>
 
+<div class="ui header">
+	<i class="grid layout icon"></i> Materials
+</div>
+<ol class="ui list">
+	{{#each class.materials}}
+		<li value='-'> <i class="book icon"></i> {{{name}}} </li>
+	{{/each}}
+</ol>
+
+
 
 {{#if isStudent}}
 	<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
@@ -21,7 +31,7 @@
 		<input type="hidden" name="student_username" value="{{user.username}}">
 		<input type="hidden" name="class_id" value="{{class._id}}">
 		<input type="hidden" name="class_title" value="{{class.title}}">
-		<input type="submit" class="button" value="Register for this class" >
+		<input type="submit" class="ui blue button" value="Register for this class" >
 	</form>
 {{else}}
 	<p><em> You must be a student or logged in to register for learn this class. </em> </p>
