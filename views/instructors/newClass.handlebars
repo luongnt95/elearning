@@ -1,7 +1,7 @@
 <div class="ui segment">
 	<h2> Add Class </h2>
 
-	<form id="regForm" class="ui form" method = "post" action="/instructors/classes/new">
+	<form id="regForm" class="ui form" method = "post" action="/instructors/classes/new" enctype="multipart/form-data">
 		<div class="field">
 			<label> Class Title </label>
 			<input type="text" name = "class_title">
@@ -10,7 +10,8 @@
 			<label> Class Description </label>
 			<textarea id="tinytextarea" name="class_description"> </textarea>
 		</div>
-		<div>
+		<span> Upload course image :  <input id="image" type="file" name="image"> </span>
+		<div style="margin-top: 1em;">
 			<input type="submit" class="ui blue button" value="Save new class" >
 		</div>
 	</form>

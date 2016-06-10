@@ -33,7 +33,7 @@ app.engine('handlebars', exphbs({defaultLayout: 'layout'}));
 app.set('view engine', 'handlebars');
 
 // Handle File upload
-app.use(upload.fields([{name: 'avatar', maxCount: 1}, {name: 'material', maxCount: 2}]));
+app.use(upload.fields([{name: 'avatar', maxCount: 1}, {name: 'material', maxCount: 1}, {name: 'image', maxCount: 1}]));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
