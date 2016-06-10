@@ -1,0 +1,20 @@
+<div class="ui segment">
+	<h2> Edit Lesson </h2>
+	<form id="regForm" class="ui form" method = "post" action="/instructors/classes/{{class_id}}/lessons/{{lesson.lesson_number}}/update">
+		<div class="field">
+			<label> Lesson Number </label>
+			<input type="text" name = "lesson_number" value="{{lesson.lesson_number}}">
+		</div>
+		<div class="field">
+			<label> Lesson Title </label>
+			<input type="text" name = "lesson_title" value = "{{{lesson.lesson_title}}}">
+		</div>
+		<div class="field">
+			<label> Lesson Body </label>
+			<textarea id="tinytextarea" name="lesson_body"> {{{lesson.lesson_body}}} </textarea>
+		</div>
+		<div>
+			<input type="submit" class="ui blue button" value="Save new lesson" >
+		</div>
+	</form>
+</div>

@@ -125,6 +125,45 @@ router.post('/classes/:id/lessons/new', function(req, res){
 	}
 });
 
+router.get('/classes/:id/lessons/:lesson_number/edit', ensureAuthenticated, function(req, res, next){
+	Class.findById(req.params.id, function(err, klass) {
+		if(err) {
+			res.send(err)
+		}
+		else {
+			for(var i = 0, len = klass.lessons.length; i < len; i++) {
+				if(klass.lessons[i].lesson_number == req.params.lesson_number) {
+					res.render('instructors/editLesson', {class_id: req.params.id, lesson: klass.lessons[i]});
+				}
+			}
+		}
+	});
+});
+
+router.post('/classes/:id/lessons/:lesson_number/update', function(req, res){
+	Class.findById(req.params.id, function(err, klass) {
+		if(err) {
+			res.send(err);
+		}
+		else {
+			for(var i = 0, len = klass.lessons.length; i < len; i++) {
+				if(klass.lessons[i].lesson_number == req.params.lesson_number) {
+					assign(klass.lessons[i], lesson_params(req));
+					klass.save(function(err) {
+						if(err) {
+							res.send(err);
+						}
+						else {
+							res.redirect("/");
+						}
+					});
+				}
+			}
+					
+		}
+	})
+});
+
 router.get('/classes/new', ensureAuthenticated, function(req, res, next){
 	res.render('instructors/newClass');
 });
@@ -245,6 +284,10 @@ function instructor_params(req) {
 
 function user_params(req) {
 	return only(req.body, 'username email')
+}
+
+function lesson_params(req) {
+	return only(req.body, 'lesson_number lesson_title lesson_body');
 }
 
 module.exports = router;
