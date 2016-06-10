@@ -1,19 +1,19 @@
-<h2> {{student.first_name}}'s Classes </h2>
-<table cellspacing="0" cellpadding="0">
-	<thread>
-		<tr>
-			<th> Class ID </th>
-			<th> Class Name </th>
-			<th> </th>
-		</tr>
-		<tbody>
-			{{#each student.classes}}
-				<tr>
-					<th> {{class_id}}</th>
-					<th> {{{class_title}}} </th>
-					<th> <a href="/classes/{{class_id}}/lessons"> View Lessons </a> </th>
-				</tr>
-			{{/each}}
-		</tbody>
-	</thread>
-</table>
+<div class="ui header">
+	Classes for you:
+</div>
+
+<div class="ui middle aligned animated list">
+	{{#each student.classes}}
+  <div class="item">
+  	<div class="ui segment">
+    <div class="right floated content">
+      <a href="/classes/{{class_id}}/lessons"> View Lessons </a>
+    </div>
+
+    <div class="content">
+      <div class="ui header"> {{{class_title}}} </div>
+    </div>
+   	</div>
+  </div>
+	{{/each}}
+</div>
