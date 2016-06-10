@@ -137,8 +137,13 @@ router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 		_instructor: {name: req.user.username, avatar_url: req.user.avatar_url}
 	});
 
-	var image = req.files['image'][0]
-	console.log(req.files['image'][0]);
+
+	var image = null;
+	try {
+		image = req.files['image'][0];
+	} catch(err) {
+		console.log(err);
+	}
 
 	classImageUploader.upload(newClass, image, function(newClass){
 		Class.saveClass(newClass, function(err, newClass){
