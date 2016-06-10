@@ -72,27 +72,28 @@ router.post('/:id/upload', function(req, res, next) {
 			res.send(err);
 		}
 		else {
-			var files = req.files['material'];
-
-			for(i in files) {
-				var file = files[i];
-				uploader.upload(klass, file, function(klass) {
-					klass.save(function(err, klass) {
-						if(err) {
-							res.send(err);
-						}
-						else {
-							console.log("ok");
-						}
-					});
-				});
+			var file = null;
+			try {
+				file = req.files['material'][0];	
+			} catch(e) {
+				console.log(e);
 			}
-
-			res.redirect('/classes/' + req.params.id + '/materials');
+			uploader.upload(klass, file, function(klass) {
+				klass.save(function(err, klass) {
+					if(err) {
+						res.send(err);
+					}
+					else {
+						res.redirect('/classes/' + req.params.id + '/materials');
+					}
+				});
+			});
 		}
-
 	});
+
 });
+
+
 
 router.get('/:id/lessons', function(req, res, next){
 	Class.getClassesById([req.params.id], function(err, classDetail){
