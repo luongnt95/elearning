@@ -3,9 +3,12 @@
 
 	{{#each classes}}
 		<div class="four wide column">
-			<h4> {{title}} </h4>
-			<p>{{{description}}} </p>
-			<a class="button" href="/classes/{{_id}}"> Class Details </a>
+
+        <div class="ui stacked segment" style="margin-bottom: 1em;">
+          <a class="ui blue header" href="/classes/{{_id}}"> {{title}} </a>
+    			<p>{{{description}}} </p>
+        </div>
+
 		</div>
 	{{/each}}
 </div>
