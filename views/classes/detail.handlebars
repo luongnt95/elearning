@@ -1,13 +1,19 @@
-<h2> {{{class.title}}} </h2>
-<p> <strong> Instructor: </strong> {{class.instructor}} </p>
+<div class="ui segment">
 
-<p> {{{class.description}}} </p>
+<h2 class="ui blue header"> {{{class.title}}} </h2>
+<div> <strong> Instructor: </strong> {{class._instructor.name}} </div>
 
-<ul class="alt">
+<div class="ui gray"> {{{class.description}}} </div>
+
+<div class="ui header">
+	<i class="grid layout icon"></i> Syllabus
+</div>
+<ol class="ui list">
 	{{#each class.lessons}}
-		<li> {{{lesson_title}}} </li>
+		<li value='-'> <i class="book icon"></i> {{{lesson_title}}} </li>
 	{{/each}}
-</ul>
+</ol>
+
 
 {{#if isStudent}}
 	<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
@@ -18,7 +24,7 @@
 		<input type="submit" class="button" value="Register for this class" >
 	</form>
 {{else}}
-	<p><em> You must be a student or logged in to register for learn this class </em> </p>
+	<p><em> You must be a student or logged in to register for learn this class. </em> </p>
+	<a class = "ui blue button" href = "/users/signup"> Sign Up Free </a>
 {{/if}}
-
-<a href="/classes/{{class.id}}/materials">Materials</a>
+</div>
