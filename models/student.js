@@ -32,6 +32,18 @@ var studentSchema = mongoose.Schema({
 	}]
 });
 
+function checkInClass(student, class_id) {
+	if (!student) return false;
+	if (student.classes){				
+		for ($i=0; $i<student.classes.length; $i++) {
+			if (class_id == student.classes[$i].class_id) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 var Student = module.exports = mongoose.model('Student', studentSchema);
 
 module.exports.getStudentByUsername = function(username, callback) {
@@ -53,28 +65,19 @@ module.exports.register = function(info, callback){
 		ok = true;
 		Student.getStudentByUsername(student_username, function(err, student){
 			if (err) throw err;
-			if (student.classes){				
-				for ($i=0; $i<student.classes.length; $i++) {
-					if (class_id == student.classes[$i].class_id) {
-						ok = false;
-						break;
-					}
-				}
-			}
-			if (ok) {
+			console.log("checkIn = ", checkInClass(student, class_id));
+
+			if ( !checkInClass(student, class_id) ) {
 				student.update({$push: {"classes": {class_id: class_id, class_title: class_title}}},
 					{safe:true, upsert: false},
 					callback
 				);
 			}
+			else {
+				callback(null, null);
+			}
 		});
 
-		/*Student.findOneAndUpdate(
-			query,
-			{$push: {"classes": {class_id: class_id, class_title: class_title}}},
-			{safe:true, upsert: true},
-			callback
-			);*/
 	} catch(err){
 		console.log(err);
 	}
