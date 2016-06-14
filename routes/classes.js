@@ -107,7 +107,7 @@ router.get('/:id/lessons', function(req, res, next){
 });
 
 router.get('/:id/lessons/:lesson_id', function(req, res, next){
-	Class.getClassesById([req.params.id], function(err, classDetail){
+	Class.getClassesById([req.params.id], function(err, klass){
 		if (err) {
 			console.log(err);
 			res.send(err);
@@ -115,11 +115,15 @@ router.get('/:id/lessons/:lesson_id', function(req, res, next){
 			lesson = {
 				lesson_title : "Could not find this lesson"
 			};
-			for (i=0; i<classDetail.lessons.length; i++)
-				if (classDetail.lessons[i].lesson_number == req.params.lesson_id) {
-					lesson = classDetail.lessons[i];
+			for (i=0; i<klass.lessons.length; i++) {
+				if (klass.lessons[i].lesson_number == req.params.lesson_id) {
+					lesson = klass.lessons[i];
 				}
-			res.render('classes/lesson', {"class": classDetail, "lesson":lesson });
+			}
+			var comments = Comment.find({class_id: klass.id, lesson_number: lesson.lesson_number}).sort({createdAt: -1}).exec(function(err, comments) {
+				if(err)	res.send(err);
+				res.render('classes/lesson', {"class": klass, "lesson":lesson, "comments": comments });
+			});
 		}
 	})
 });
