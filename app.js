@@ -9,6 +9,7 @@ var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
 var passport = require('passport');
+var cache = require('memory-cache');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var multer = require('multer');

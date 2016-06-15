@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
+var cache = require('memory-cache');
 var uploader = require('../uploaders/avatarUploader');
 
 Class = require('../models/class');
@@ -55,28 +56,46 @@ router.post('/:id/update', function(req, res, next) {
 });
 
 router.get('/classes', ensureAuthenticated, function(req, res, next){
-	Student.getStudentByUsername(req.user.username, function(err, student){
-		if (err) {
-			res.send(err);
-		} else {
-			res.render('students/classes', {"student": student});
-		}
-	});
+	var student = cache.get(req.user.username);
+	if (student) {		
+		//console.log("student0 = "+ student);
+		res.render('students/classes', {"student": student});
+	}
+	else {		
+		Student.getStudentByUsername(req.user.username, function(err, student){
+			if (err) {
+				res.send(err);
+			} else {
+				cache.put(req.user.username, student);
+				//console.log("student1 = "+ student);
+				res.render('students/classes', {"student": student});
+			}
+		});
+
+	}
 });
 
-router.post('/classes/register', function(req, res){
+
+router.post('/classes/register', function(req, res, next){
 	var info = {
 		student_username : req.user.username,
 		class_id : req.body.class_id,
 		class_title : req.body.class_title
 	}
 	
-	Student.register(info, function(err, student){
-		if (err) throw err;
-		console.log(student);
-	});
-	req.flash('success', 'You are now registed');
-	res.redirect('/students/classes');
+	Student.register(info, function(err, result){
+		if (err) throw err;		
+		//console.log("result = ", result);
+		if (result) {			
+			cache.del(req.user.username);
+			req.flash('success', 'You are now registed');
+			res.redirect('/students/classes');
+		}
+		else {
+			req.flash('success', 'You are now registed');
+			res.redirect('/students/classes');
+		}
+	});		
 });
 
 function ensureAuthenticated(req, res, next) {
