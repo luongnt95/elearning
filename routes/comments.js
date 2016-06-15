@@ -15,6 +15,26 @@ router.post('/', auth.ensureAuthenticated, function(req, res, next) {
 	});
 });
 
+router.post('/new', auth.ensureAuthenticated, function(req, res, next) {
+	var comment = new Comment();
+	//console.log("data = ", comment_params(req));
+
+	assign(comment, comment_params(req));
+	if (!comment.content) {
+		res.setHeader('Content-Type', 'application/json');
+    	res.status(400).send(JSON.stringify({ message: 'Your comment must not empty!', result: null}));
+	}
+	else {		
+		comment.save(function(err, result) {
+			if(err) res.send(err);
+
+			res.setHeader('Content-Type', 'application/json');
+	    	res.status(200).send(JSON.stringify({ message: 'Your comment is added!', result }));
+		});
+	}
+});
+
+
 function comment_params(req) {
 	return only(req.body, 'content username class_id lesson_number');
 }

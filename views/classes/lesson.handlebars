@@ -5,17 +5,21 @@
 </div>
 
 <div class="comment-post">
-	<form action="/comments" method="post">
+	<form action="/comments/new" method="post" id="comment">
 		<input type="hidden" name="class_id" value="{{class.id}}">
 		<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
 		<input type="hidden" name="username" value="{{user.username}}">
+
 		<textarea name="content" cols="50" rows="2" placeholder="Post your comment here!"></textarea>
-		<button type="submit">Post</button>
+		<button id="comment_submit" type="submit">Post</button>
 	</form>
 </div>
 
+<div id="new_message"></div>
 <div class="comments">
 	<ul>
+		<li><div id="new_comment"></div>  </li>
+
 		{{#each comments}}
 			<li>
 				<p>{{content}}</p>
@@ -24,3 +28,5 @@
 		{{/each}}
 	</ul>
 </div>
+
+<script type="text/javascript" src="/javascripts/ajax_comment.js"></script>
