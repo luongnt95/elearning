@@ -1,32 +1,46 @@
+
+
 <a href="/classes/{{class._id}}/lessons"> Back to lessons </a>
-<h2> {{{lesson.lesson_title}}} </h2>
+<h3 class="ui center aligned top attached header">
+	{{{lesson.lesson_title}}}
+</h3>
 <div class="ui tall stacked segment">
   {{{lesson.lesson_body}}}
 </div>
 
-<div class="comment-post">
-	<form action="/comments/new" method="post" id="comment">
-		<input type="hidden" name="class_id" value="{{class.id}}">
-		<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
-		<input type="hidden" name="username" value="{{user.username}}">
+<div class="ui segment">
+	<div class="ui comments">
+	  	<h3 class="ui header">Comments</h3>
+		<form id= "commentform" class="ui reply form" action="/comments/new" method="post">
+			<input type="hidden" name="class_id" value="{{class.id}}">
+			<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
+			<input type="hidden" name="username" value="{{user.username}}">
+			<input type="hidden" name="avatar_url" value="{{user.avatar_url}}">
+			<textarea name="content" cols="10" rows="2" placeholder="Post your comment here!"></textarea>
 
-		<textarea name="content" cols="50" rows="2" placeholder="Post your comment here!"></textarea>
-		<button id="comment_submit" type="submit">Post</button>
-	</form>
-</div>
+		  <button style= "margin-top: 1em;" 	type="submit" class="ui primary submit labeled icon button">
+		    <i class="icon edit"></i> Add Reply
+		  </button>
+		</form>
 
-<div id="new_message"></div>
-<div class="comments">
-	<ul>
-		<li><div id="new_comment"></div>  </li>
+		<div id="new_message"></div>
 
-		{{#each comments}}
-			<li>
-				<p>{{content}}</p>
-				<div>{{username}}</div>
-			</li>
-		{{/each}}
-	</ul>
+  		<div id='comment_area'>
+			{{#each comments}}
+		  		<div class="comment">
+		    		<a class="avatar">
+		      			<img src="{{{avatar_url}}}">
+		    		</a>
+			    	<div class="content">
+			      		<a class="author">{{username}} </a>
+			      		<div class="text">
+			      			<p>{{content}}</p>
+			      		</div>
+		    		</div>
+		  		</div>
+		  	{{/each}}
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript" src="/javascripts/ajax_comment.js"></script>

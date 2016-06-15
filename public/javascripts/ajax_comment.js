@@ -1,6 +1,6 @@
 
 $(document).ready(function(){
-    $('form#comment').submit(function(e){            
+    $('form#commentform').submit(function(e){            
         var postData = $(this).serializeArray();
         var formURL = $(this).attr("action");
 
@@ -12,10 +12,13 @@ $(document).ready(function(){
             encode : true
         }).done(function(data, textStatus, jqXHR) {
                 console.log(data.message);
-                
+
                 $('#new_message').html('<p>' + data.message + '</p>');
-                $('#new_comment').html("<li><p>" + data.result.content + "</p><div>" + 
-                                                   data.result.username + "</div></li>");
+                $('#comment_area').prepend(
+                    '<div class="comment"><a class="avatar"><img src="' + data.result.avatar_url +'"> </a>' +
+                    '<div class="content">' + '<a class="author">' + data.result.username + 
+                    '</a><div class="text"><p>' + data.result.content + '</p></div></div></div>'
+                );
             })
             .fail(function(jqXHR, textStatus, errorThrown) {
                 $('#new_message').html('<p> You can not comment on this!');
