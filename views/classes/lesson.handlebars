@@ -3,3 +3,24 @@
 <div class="ui tall stacked segment">
   {{{lesson.lesson_body}}}
 </div>
+
+<div class="comment-post">
+	<form action="/comments" method="post">
+		<input type="hidden" name="class_id" value="{{class.id}}">
+		<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
+		<input type="hidden" name="username" value="{{user.username}}">
+		<textarea name="content" cols="50" rows="2" placeholder="Post your comment here!"></textarea>
+		<button type="submit">Post</button>
+	</form>
+</div>
+
+<div class="comments">
+	<ul>
+		{{#each comments}}
+			<li>
+				<p>{{content}}</p>
+				<div>{{username}}</div>
+			</li>
+		{{/each}}
+	</ul>
+</div>
