@@ -1,26 +1,39 @@
+
+
 <a href="/classes/{{class._id}}/lessons"> Back to lessons </a>
-<h2> {{{lesson.lesson_title}}} </h2>
+<h3 class="ui center aligned top attached header">
+	{{{lesson.lesson_title}}}
+</h3>
 <div class="ui tall stacked segment">
   {{{lesson.lesson_body}}}
 </div>
 
-<div class="comment-post">
-	<form action="/comments" method="post">
-		<input type="hidden" name="class_id" value="{{class.id}}">
-		<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
-		<input type="hidden" name="username" value="{{user.username}}">
-		<textarea name="content" cols="50" rows="2" placeholder="Post your comment here!"></textarea>
-		<button type="submit">Post</button>
-	</form>
-</div>
+<div class="ui segment">
+	<div class="ui comments">
+	  <h3 class="ui header">Comments</h3>
+		<form class="ui reply form" action="/comments" method="post">
+			<input type="hidden" name="class_id" value="{{class.id}}">
+			<input type="hidden" name="lesson_number" value="{{lesson.lesson_number}}">
+			<input type="hidden" name="username" value="{{user.username}}">
+			<input type="hidden" name="avatar_url" value="{{user.avatar_url}}">
+			<textarea name="content" cols="10" rows="2" placeholder="Post your comment here!"></textarea>
 
-<div class="comments">
-	<ul>
+		  <button style= "margin-top: 1em;" 	type="submit" class="ui primary submit labeled icon button">
+		    <i class="icon edit"></i> Add Reply
+		  </button>
+		</form>
 		{{#each comments}}
-			<li>
-				<p>{{content}}</p>
-				<div>{{username}}</div>
-			</li>
-		{{/each}}
-	</ul>
+	  <div class="comment">
+	    <a class="avatar">
+	      <img src="{{{avatar_url}}}">
+	    </a>
+	    <div class="content">
+	      <a class="author">{{username}} </a>
+	      <div class="text">
+	      	<p>{{content}}</p>
+	      </div>
+	    </div>
+	  </div>
+	  {{/each}}
+	</div>
 </div>

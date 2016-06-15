@@ -5,7 +5,8 @@ var commentSchema = mongoose.Schema(
 		content: String,
 		class_id: String,
 		lesson_number: Number,
-		username: String
+		username: String,
+    avatar_url: String
 	},
 	{
 		timestamps: true
