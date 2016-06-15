@@ -23,7 +23,7 @@ router.post('/new', auth.ensureAuthenticated, function(req, res, next) {
 	assign(comment, comment_params(req));
 	if (!comment.content) {
 		res.setHeader('Content-Type', 'application/json');
-    	res.status(400).send(JSON.stringify({ message: 'Your comment must not empty!', result: null}));
+    	res.status(200).send(JSON.stringify({ message: 'Your comment must not empty!', result: null}));
 	}
 	else {		
 		comment.save(function(err, result) {
