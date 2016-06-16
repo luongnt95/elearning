@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 		} else {
 			res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});
 		}
-	}, 100);
+	}, 10);
 });
 
 module.exports = router;
