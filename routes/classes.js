@@ -40,7 +40,7 @@ router.get('/', function(req, res, next) {
 				})(i);
 			}
 		}
-	}, 10);
+	});
 });
 
 
