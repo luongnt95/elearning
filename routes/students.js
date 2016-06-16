@@ -57,18 +57,18 @@ router.post('/:id/update', function(req, res, next) {
 
 router.get('/classes', ensureAuthenticated, function(req, res, next){
 	var student = cache.get(req.user.username);
-	if (student) {		
+	if (student) {
 		//console.log("student0 = "+ student);
-		res.render('students/classes', {"student": student});
+		res.render('students/classes', {"student": student, "messages": req.flash('success')});
 	}
-	else {		
+	else {
 		Student.getStudentByUsername(req.user.username, function(err, student){
 			if (err) {
 				res.send(err);
 			} else {
 				cache.put(req.user.username, student);
 				//console.log("student1 = "+ student);
-				res.render('students/classes', {"student": student});
+				res.render('students/classes', {"student": student, "messages": req.flash('success')});
 			}
 		});
 
@@ -82,11 +82,11 @@ router.post('/classes/register', function(req, res, next){
 		class_id : req.body.class_id,
 		class_title : req.body.class_title
 	}
-	
+
 	Student.register(info, function(err, result){
-		if (err) throw err;		
+		if (err) throw err;
 		//console.log("result = ", result);
-		if (result) {			
+		if (result) {
 			cache.del(req.user.username);
 			req.flash('success', 'You are now registed');
 			res.redirect('/students/classes');
@@ -95,7 +95,7 @@ router.post('/classes/register', function(req, res, next){
 			req.flash('success', 'You are now registed');
 			res.redirect('/students/classes');
 		}
-	});		
+	});
 });
 
 function ensureAuthenticated(req, res, next) {

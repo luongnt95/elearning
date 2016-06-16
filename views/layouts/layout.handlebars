@@ -6,13 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="description" content="" />
   <meta name="copyright" content="" />
+
 <!--   <link rel="stylesheet" type="text/css" href="/stylesheets/kickstart.css" media="all" />
   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" media="all" /> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
+<<<<<<< HEAD
   <link rel="stylesheet" href="/stylesheets/custom.css">
+=======
+  <link rel="stylesheet" href="/stylesheets/main.css">
+>>>>>>> bf12d1f863c948a3b7dbbc58197e19e9ebe7d512
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
   <script type = "text/javascript" src="/javascripts/tinymce/tinymce.min.js"></script>
+  <script src="/javascripts/main.js"> </script>
   <!-- <script type="text/javascript" src='//cdn.tinymce.com/4/tinymce.min.js'></script> -->
   <script>tinymce.init({
     selector:'#tinytextarea',
@@ -46,7 +52,13 @@
   <div class="ui doubling stackable grid container">
     <div class="ui row">
     	<div class="twelve wide column">
-    		{{{messages}}}
+        <div id="messagebox">
+        {{#if messages}}
+    		  <div class="ui blue message">
+            {{{messages}}}
+          </div>
+        {{/if}}
+        </div>
     		{{#if errors}}
     			{{#each errors}}
     				<div class="notice error">
