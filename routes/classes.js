@@ -34,13 +34,11 @@ router.get('/', function(req, res, next) {
 							for(var index in classes) {
 								classes[index].ratingScore = ratingScores[index];
 							}
-							return res.render('classes/index', { "classes": classes});
-							
+							res.render('classes/index', { "classes": classes});
 						}
 					});					
 				})(i);
 			}
-
 		}
 	}, 100);
 });
