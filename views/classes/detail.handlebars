@@ -1,3 +1,6 @@
+<input id="class_id" type="hidden", name="class_id" value="{{class.id}}">
+<input id="user_id" type="hidden" name="user_id" value="{{user.id}}">
+
 <div class="ui segment">
 
 <h2 class="ui blue header"> {{{class.title}}} </h2>
@@ -23,7 +26,7 @@
 	{{/each}}
 </ol>
 
-
+<div id="rating"></div>
 
 {{#if isStudent}}
 	<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
@@ -38,3 +41,5 @@
 	<a class = "ui blue button" href = "/users/signup"> Sign Up Free </a>
 {{/if}}
 </div>
+
+<script src="/javascripts/ratingBundle.js"></script>

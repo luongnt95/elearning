@@ -23,6 +23,7 @@ var classSchema = mongoose.Schema({
 			type: String
 		}
 	}],
+	// score: {type: Number, default: -1},
 	materials: [{url: String, name: String}]
 });
 
