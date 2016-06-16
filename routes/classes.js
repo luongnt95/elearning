@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
 			console.log(err);
 			res.send(err);
 		} else {
+			var ratingScores = [];
 			for(i in classes) {
 				var klass = classes[i];
 				Rating.find({class_id: klass.id}, function(err, ratings) {
@@ -23,14 +24,21 @@ router.get('/', function(req, res, next) {
 						sum += ratings[i].score;
 					}
 					if(len == 0) {
-						klass.ratingScore = 0;
+						ratingScores.push(0);
 					}
 					else {
-						klass.ratingScore = sum/len;
+						ratingScores.push(Math.round(sum/len));
+					}
+					if(ratingScores.length == classes.length) {
+						console.log("luong");
+						console.log(ratingScores);
+						for(var index in classes) {
+							classes[index].ratingScore = ratingScores[index];
+						}
+						res.render('classes/index', { "classes": classes});	
 					}
 				});
 			}
-  		res.render('classes/index', { "classes": classes });
 		}
 	}, 100);
 });

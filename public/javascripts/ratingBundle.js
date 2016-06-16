@@ -144,10 +144,6 @@ rating.on('rate', function(weight) {
   console.log('rated: ' + weight);
   var class_id = $("#class_id").val();
   var user_id = $("#user_id").val();
-  // $.post(`/classes/${class_id}/rating`, {score: weight}, function(data) {
-  	
-  // });
-
   $.post("/ratings", {score: weight, class_id: class_id, user_id: user_id});
 });
  
