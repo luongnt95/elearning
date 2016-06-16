@@ -11,26 +11,31 @@ Rating = require('../models/rating');
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
 		if (err){
-			console.log(err);
 			res.send(err);
 		} else {
+			var ratingScores = [];
 			for(i in classes) {
 				var klass = classes[i];
 				Rating.find({class_id: klass.id}, function(err, ratings) {
 					var sum = 0;
-					var len = ratings.length;
+					var len = ratings.length;					
 					for(var i = 0; i < len; i++) {
 						sum += ratings[i].score;
 					}
 					if(len == 0) {
-						klass.ratingScore = 0;
+						ratingScores.push(0);
 					}
 					else {
-						klass.ratingScore = sum/len;
+						ratingScores.push(Math.round(sum/len));
+					}
+					if(ratingScores.length == classes.length) {
+						for(var index in classes) {
+							classes[index].ratingScore = ratingScores[index];
+						}
+						res.render('classes/index', { "classes": classes});	
 					}
 				});
 			}
-  		res.render('classes/index', { "classes": classes });
 		}
 	}, 100);
 });

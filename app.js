@@ -16,7 +16,7 @@ var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' })
 mongoose.connect("mongodb://luong:123456@ds011890.mlab.com:11890/luong");
 
-// mongoose.connect('mongodb://localhost/elearn');
+// mongoose.connect('mongodb://localhost/elearn'); 
 var db = mongoose.connection;
 async = require('async');
 
@@ -25,7 +25,7 @@ var users = require('./routes/users');
 var classes = require('./routes/classes');
 var students = require('./routes/students');
 var instructors = require('./routes/instructors');
-var comments = require('./routes/comments');
+var comments = require('./routes/comments'); 
 var ratings = require('./routes/ratings');
 
 var app = express();

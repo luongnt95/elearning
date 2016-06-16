@@ -3,12 +3,11 @@
 <div class="ui row">
   <div class="ui divided segment items">
   {{#each classes}}
-
       <input class="rating-value" type="hidden" value="{{ratingScore}}">
       <div class="item">
-        <div class="image">
+        <a class="image" href="/classes/{{_id}}">
           <img src="{{image_url}}">
-        </div>
+        </a>
         <div class="content">
           <a class="ui blue header" href="/classes/{{_id}}">{{title}}</a>
           <span class="student-number"> ({{ students.length }} students) </span>
