@@ -5,7 +5,11 @@
 	}
 </style>
 
+<input id="class_id" type="hidden", name="class_id" value="{{class.id}}">
+<input id="user_id" type="hidden" name="user_id" value="{{user.id}}">
+
 <h2> Lessons </h2>
+
 <h2> {{class.title}}'s Classes </h2>
 <div class="ui segment">
 <table>
@@ -28,3 +32,30 @@
 </table>
 </div>
 
+<div id="rating"></div>
+
+<div class="ui modal center">
+  <i class="close icon"></i>
+  <div class="header">
+    Star the class
+  </div>
+  <div class="image content">
+    <div class="ui medium image">
+      <img src="{{class.image_url}}">
+    </div>
+    <div class="description">
+      <div class="ui header">Are you sure?</div>
+    </div>
+  </div>
+  <div class="actions">
+    <div id="cancel" class="ui black deny button">
+      Cancel
+    </div>
+    <div id="ok" class="ui positive right labeled icon button">
+      Ok
+      <i class="checkmark icon"></i>
+    </div>
+  </div>
+</div>
+
+<script src="/javascripts/ratingBundle.js"></script>

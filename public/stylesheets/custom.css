@@ -23,3 +23,12 @@ body {
   color: gray;
   font-size: 0,8em;
 }
+
+#rating {
+	cursor: pointer;
+	text-align: center;
+}
+
+.ui.modal {
+	transform: translateY(-50%);
+}

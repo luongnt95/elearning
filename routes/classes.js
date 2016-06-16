@@ -11,7 +11,6 @@ Rating = require('../models/rating');
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
 		if (err){
-			console.log(err);
 			res.send(err);
 		} else {
 			var ratingScores = [];
@@ -19,7 +18,7 @@ router.get('/', function(req, res, next) {
 				var klass = classes[i];
 				Rating.find({class_id: klass.id}, function(err, ratings) {
 					var sum = 0;
-					var len = ratings.length;
+					var len = ratings.length;					
 					for(var i = 0; i < len; i++) {
 						sum += ratings[i].score;
 					}
@@ -30,8 +29,6 @@ router.get('/', function(req, res, next) {
 						ratingScores.push(Math.round(sum/len));
 					}
 					if(ratingScores.length == classes.length) {
-						console.log("luong");
-						console.log(ratingScores);
 						for(var index in classes) {
 							classes[index].ratingScore = ratingScores[index];
 						}

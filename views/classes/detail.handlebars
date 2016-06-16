@@ -1,45 +1,42 @@
-<input id="class_id" type="hidden", name="class_id" value="{{class.id}}">
-<input id="user_id" type="hidden" name="user_id" value="{{user.id}}">
-
 <div class="ui segment">
 
-<h2 class="ui blue header"> {{{class.title}}} </h2>
-<div> <strong> Instructor: </strong> {{class._instructor.name}} </div>
+	<h2 class="ui blue header"> {{{class.title}}} </h2>
+	<div> <strong> Instructor: </strong> {{class._instructor.name}} </div>
 
-<div class="ui gray"> {{{class.description}}} </div>
+	<div class="ui gray"> {{{class.description}}} </div>
 
-<div class="ui header">
-	<i class="grid layout icon"></i> Syllabus
+	<div class="ui header">
+		<i class="grid layout icon"></i> Syllabus
+	</div>
+	<ol class="ui list">
+		{{#each class.lessons}}
+			<li value='-'> <i class="book icon"></i> {{{lesson_title}}} </li>
+		{{/each}}
+	</ol>
+
+	<div class="ui header">
+		<i class="grid layout icon"></i> Materials
+	</div>
+	<ol class="ui list">
+		{{#each class.materials}}
+			<li value='-'> <i class="download icon"></i> <a href="{{{url}}}"> {{{name}}} </a> </li>
+		{{/each}}
+	</ol>
+
+	<div id="rating"></div>
+
+
+
+	{{#if isStudent}}
+		<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
+			<input type="hidden" name="student_id" value="{{user._id}}">
+			<input type="hidden" name="student_username" value="{{user.username}}">
+			<input type="hidden" name="class_id" value="{{class._id}}">
+			<input type="hidden" name="class_title" value="{{class.title}}">
+			<input type="submit" class="ui blue button" value="Register for this class" >
+		</form>
+	{{else}}
+		<p><em> You must be a student or logged in to register for learn this class. </em> </p>
+		<a class = "ui blue button" href = "/users/signup"> Sign Up Free </a>
+	{{/if}}
 </div>
-<ol class="ui list">
-	{{#each class.lessons}}
-		<li value='-'> <i class="book icon"></i> {{{lesson_title}}} </li>
-	{{/each}}
-</ol>
-
-<div class="ui header">
-	<i class="grid layout icon"></i> Materials
-</div>
-<ol class="ui list">
-	{{#each class.materials}}
-		<li value='-'> <i class="download icon"></i> <a href="{{{url}}}"> {{{name}}} </a> </li>
-	{{/each}}
-</ol>
-
-<div id="rating"></div>
-
-{{#if isStudent}}
-	<form id="classRegForm" method = "post" action="/{{usertype}}s/classes/register">
-		<input type="hidden" name="student_id" value="{{user._id}}">
-		<input type="hidden" name="student_username" value="{{user.username}}">
-		<input type="hidden" name="class_id" value="{{class._id}}">
-		<input type="hidden" name="class_title" value="{{class.title}}">
-		<input type="submit" class="ui blue button" value="Register for this class" >
-	</form>
-{{else}}
-	<p><em> You must be a student or logged in to register for learn this class. </em> </p>
-	<a class = "ui blue button" href = "/users/signup"> Sign Up Free </a>
-{{/if}}
-</div>
-
-<script src="/javascripts/ratingBundle.js"></script>
