@@ -8,6 +8,7 @@ var classImageUploader = require('../uploaders/classImageUploader')
 Class = require('../models/class');
 Instructor = require('../models/instructor');
 User = require('../models/user');
+Student = require('../models/student');
 
 router.get('/:id/profile', function(req, res, next) {
 	var user_id = req.params.id;
@@ -191,11 +192,11 @@ router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 	} catch(e) {
 		console.log(e);
 	}
-	console.log(image);
+	// console.log(image);
 	classImageUploader.upload(newClass, image, function(newClass){
 		Class.saveClass(newClass, function(err, newClass){
 			if (err) throw err;
-			console.log("class :  ", newClass);
+			// console.log("class :  ", newClass);
 			var info = {
 				instructor_username : req.user.username,
 				class_id : newClass._id,
@@ -203,7 +204,7 @@ router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 			}
 			Instructor.saveClass(info, function(err, instructor){
 				if (err) throw err;
-				console.log(instructor);
+				// console.log(instructor);
 				req.flash('success', 'You are added a new class');
 				res.redirect('/instructors/classes');
 			});
@@ -227,11 +228,12 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	}
 	Class.updateClass(info, function(err, newClass){
 		if (err) throw err;
-		//console.log("class :  ", newClass);
-		console.log(req.user.id);
+		// console.log("class :  "+ newClass);
+		sendNotification(newClass, {notification: "Hi"});
+
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
-			console.log("Instructor :  ", instructor);
+			// console.log("Instructor :  ", instructor);
 			for ($i=0; $i<instructor.classes.length; $i++) {
 				if (instructor.classes[$i].class_id == info.class_id) {
 					instructor.classes[$i].class_title = info.class_title;
@@ -254,24 +256,18 @@ router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){
 		class_id : req.params.id,
 	}
 	Class.destroyClass(info, function(err){
-		console.log(err);
+		// console.log(err);
 		if (err) throw err;
 		Instructor.getInstructorByUsername(req.user.username, function(err, instructor){
 			if (err) throw err;
 			//console.log("Instructor finded:  ", instructor.classes[0].class_id[0]==info.class_id);
 
 			instructor.classes = instructor.classes.filter(function(classDetails){return classDetails.class_id[0] != info.class_id});
-			/*for ($i=0; $i<instructor.classes.length; $i++) {
-				if (instructor.classes[$i].class_id == info.class_id) {
-					instructor.classes[$i].remove();
-					break;
-				}
-			}*/
-
-			console.log("Instructor dede:  ", instructor.classes);
+			
+			// console.log("Instructor dede:  ", instructor.classes);
 			instructor.save(function(err, instructor){
 				if (err) throw err;
-				console.log("Instructor update:  ", instructor);
+				// console.log("Instructor update:  ", instructor);
 				req.flash('success', 'You are added a new class');
 				res.redirect('/instructors/classes');
 			});
@@ -296,6 +292,18 @@ function user_params(req) {
 
 function lesson_params(req) {
 	return only(req.body, 'lesson_number lesson_title lesson_body');
+}
+
+function sendNotification(klass, notification){
+	klass.students.forEach(function(student){
+		User.updateNotification({
+			username: student.username,
+			notification: notification
+		}, function(err, result) {
+			if (err) throw(err);
+			// console.log("result" + result);
+		});
+	});
 }
 
 module.exports = router;

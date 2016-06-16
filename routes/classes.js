@@ -93,8 +93,6 @@ router.post('/:id/upload', function(req, res, next) {
 
 });
 
-
-
 router.get('/:id/lessons', function(req, res, next){
 	Class.getClassesById([req.params.id], function(err, classDetail){
 		if (err) {
