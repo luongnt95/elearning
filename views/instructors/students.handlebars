@@ -1,17 +1,15 @@
-
-	<div class="ui segment">
-	  <div class="ui item">
-
+<div class="ui segment">
+	<div class="ui center aligned blue header">{{{class.title}}}</div>
+	<a class="ui header">Students of class:</a>
+	<div class="ui very relaxed list">
+		{{#each class.students}}
+	  <div class="item">
+	    <img class="ui avatar image" src="{{avatar_url}}">
 	    <div class="content">
-		    <a class="ui header">{{{class.title}}}</a>
-	      	<div class="description">
-	        	<p>Lists of student</p>
-	      	</div>
-			{{#each class.students}}
-				<p>Username: {{username}}</p>
-				<p>Email: {{email}} </p>
-				<p>Avatar: {{avatar_url}} </p>
-			{{/each}}
+	      <a class="header">{{username}}</a>
+	      <div class="description">{{email}} </div>
 	    </div>
 	  </div>
+	 	{{/each}}
 	</div>
+</div>
