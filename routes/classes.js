@@ -15,6 +15,7 @@ router.get('/', function(req, res, next) {
 			res.send(err);
 		} else {
 			var ratingScores = [];
+			var ratingCounts = [];
 			for(var i = 0; i < classes.length; i++) {
 				(function(i) {
 					var klass = classes[i];
@@ -26,11 +27,13 @@ router.get('/', function(req, res, next) {
 						}
 						if(len == 0) {
 							ratingScores[i] = 0;
+							ratingCounts.push(0);
 						}
 						else {
 							ratingScores[i] = Math.round(sum/len);
+							ratingCounts.push(Math.round(sum/len));
 						}
-						if(ratingScores.length == classes.length) {
+						if(ratingCounts.length == classes.length) {
 							for(var index in classes) {
 								classes[index].ratingScore = ratingScores[index];
 							}
