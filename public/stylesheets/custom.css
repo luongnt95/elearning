@@ -6,3 +6,11 @@
   z-index: 10000;
   padding: 10px;
 }
+
+.star.glow {
+	color: brown;
+}
+
+.star {
+	color: gray;
+}

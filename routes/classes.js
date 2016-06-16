@@ -1,29 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var uploader = require('../uploaders/materialUploader');
-
-// var cloudinary = require('cloudinary');
-
-
-// cloudinary.config({
-//  cloud_name: 'elearning',
-//  api_key: '813799211176374',
-//  api_secret: 'e9rMy7uvZDBDBePhn8tobMGDVeo'
-// })
-
-// var storage = multer.diskStorage({
-// 	destination: function(req, file, callback) {
-// 		callback(null, './uploads/materials');
-// 	},
-// 	filename: function(req, file, callback) {
-// 		callback(null, file.fieldname+ '-' + Date.now());
-// 	}
-// });
-
-// var upload = multer({storage: storage}).array('material', 2);
+var assign = require('object-assign');
+var only = require('only');
 
 Class = require('../models/class');
 Student = require('../models/student');
+Rating = require('../models/rating');
 
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
@@ -31,7 +14,23 @@ router.get('/', function(req, res, next) {
 			console.log(err);
 			res.send(err);
 		} else {
-  			res.render('classes/index', { "classes": classes });
+			for(i in classes) {
+				var klass = classes[i];
+				Rating.find({class_id: klass.id}, function(err, ratings) {
+					var sum = 0;
+					var len = ratings.length;
+					for(var i = 0; i < len; i++) {
+						sum += ratings[i].score;
+					}
+					if(len == 0) {
+						klass.ratingScore = 0;
+					}
+					else {
+						klass.ratingScore = sum/len;
+					}
+				});
+			}
+  		res.render('classes/index', { "classes": classes });
 		}
 	}, 100);
 });
@@ -46,7 +45,8 @@ router.get('/:id', function(req, res, next){
 			if (req.user){
 				isStudent = req.user.type == 'student';
 			}
-			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent });
+
+			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent});
 		}
 	});
 });
