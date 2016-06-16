@@ -48,17 +48,15 @@ router.get('/', function(req, res, next) {
 
 router.get('/:id', function(req, res, next){
 	Class.findById(req.params.id, function(err, classDetail){
-		if (err) {
-			res.send(err);
-		}
-		else {
+
+
 			isStudent = false;
 			if (req.user){
 				isStudent = req.user.type == 'student';
 			}
 			var isLoggedIn = req.user != null;
 			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent, "isLoggedIn": isLoggedIn});
-		}
+		
 	});
 });
 

@@ -5,15 +5,12 @@ Class = require('../models/class');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
-		if (err){
-			res.send(err);
-		} else {
+
 			var ratingScores = [];
 			for(var i = 0; i < classes.length; i++) {
 				(function(i) {
 					var klass = classes[i];
 					Rating.find({class_id: klass.id}, function(err, ratings) {
-						if(err) send(err);
 						var sum = 0;
 						var len = ratings.length;					
 						for(var j = 0; j < len; j++) {
@@ -29,12 +26,12 @@ router.get('/', function(req, res, next) {
 							for(var index in classes) {
 								classes[index].ratingScore = ratingScores[index];
 							}
-							res.render('index', { "classes": classes, "isHome": true});
+							res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});
 						}
 					});					
 				})(i);
 			}
-		}
+		
 	}, 100);
 });
 
