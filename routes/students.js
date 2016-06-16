@@ -9,8 +9,6 @@ Class = require('../models/class');
 Student = require('../models/student');
 User = require('../models/user');
 
-
-
 router.get('/:id/profile', function(req, res, next) {
 	var user_id = req.params.id;
 	Student.findOne({user_id: user_id}, function(err, student) {
@@ -68,13 +66,13 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 			} else {
 				cache.put(req.user.username, student);
 				//console.log("student1 = "+ student);
-				res.render('students/classes', {"student": student, "messages": req.flash('success')});
+				res.render('students/classes', {"student": student, 
+												"messages": req.flash('success')});
 			}
 		});
 
 	}
 });
-
 
 router.post('/classes/register', function(req, res, next){
 	var info = {
@@ -88,15 +86,22 @@ router.post('/classes/register', function(req, res, next){
 		//console.log("result = ", result);
 		if (result) {
 			cache.del(req.user.username);
-			req.flash('success', 'You are now registed');
-			res.redirect('/students/classes');
+			Class.addStudent(req.body.class_id, getUserInfo(req), function(err, result){
+				if (err) throw err;
+				//req.flash('success', 'You are now registed');
+				res.redirect('/students/classes');
+			});
 		}
 		else {
-			req.flash('success', 'You are now registed');
+			//req.flash('success', 'You are now registed');
 			res.redirect('/students/classes');
 		}
 	});
 });
+
+function getUserInfo(req){
+	return only(req.user, 'username _id email avatar_url');
+}
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {

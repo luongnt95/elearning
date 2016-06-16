@@ -23,7 +23,12 @@ var classSchema = mongoose.Schema({
 			type: String
 		}
 	}],
-	// score: {type: Number, default: -1},
+	students:[{
+		username: String,
+		avatar_url: String,
+		user_id: String,
+		email: String
+	}],
 	materials: [{url: String, name: String}]
 });
 
@@ -58,6 +63,13 @@ module.exports.addLesson = function(info, callback){
 	);
 }
 
+module.exports.addStudent = function(class_id, student, callback){
+	Class.findByIdAndUpdate(class_id,
+		{$push:{"students":student}},
+		{upsert:true, safe:true},
+		callback
+	);
+}
 
 module.exports.updateClass = function(info, callback){
 	console.log(info);

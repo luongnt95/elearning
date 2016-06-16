@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 			}
   		res.render('classes/index', { "classes": classes });
 		}
-	}, 20);
+	}, 100);
 });
 
 router.get('/:id', function(req, res, next){
