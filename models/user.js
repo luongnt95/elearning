@@ -28,7 +28,13 @@ var userSchema = mongoose.Schema({
 	type:{
 		type: String
 	},
-	avatar_url: {type: String}
+	avatar_url: {type: String},
+	notifications: [{
+		class_id: [mongoose.Schema.Types.ObjectId],		
+		class_title: String,
+		instructor: String,
+		notification: String
+	}]
 });
 
 var User = module.exports = mongoose.model('User', userSchema);
@@ -84,5 +90,16 @@ module.exports.saveInstructor = function(newUser, newInstructor, callback){
 		async.parallel([newUser.save, newInstructor.save, callback]);
 
 		//newUser.save(callback);
+	});
+}
+
+module.exports.updateNotification = function(info, callback){
+	// console.log(info);
+	User.findOne({username: info.username}, function(err, user){
+		user.notifications.push(info.notification);
+		user.save(function(err, user){
+			if (err) throw err;
+			// console.log("user= " + user);
+		});
 	});
 }

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var User = require('../models/user');
+var Student = require('../models/student');
 
 var classSchema = mongoose.Schema({
 	title:{
@@ -29,6 +30,7 @@ var classSchema = mongoose.Schema({
 		user_id: String,
 		email: String
 	}],
+	notifications:[{notification: String}],
 	materials: [{url: String, name: String}]
 });
 
@@ -72,11 +74,13 @@ module.exports.addStudent = function(class_id, student, callback){
 }
 
 module.exports.updateClass = function(info, callback){
-	console.log(info);
+	// console.log(info);
 	Class.findById(info.class_id, function(err, classDetails){
 		if (err) throw err;
 		classDetails.title = info.class_title;
 		classDetails.description = info.class_description;
+		classDetails.notifications.push({notification: "Hi"});
+
 		classDetails.save(callback);
 	});
 }

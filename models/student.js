@@ -65,7 +65,7 @@ module.exports.register = function(info, callback){
 		ok = true;
 		Student.getStudentByUsername(student_username, function(err, student){
 			if (err) throw err;
-			console.log("checkIn = ", checkInClass(student, class_id));
+			// console.log("checkIn = ", checkInClass(student, class_id));
 
 			if ( !checkInClass(student, class_id) ) {
 				student.update({$push: {"classes": {class_id: class_id, class_title: class_title}}},
@@ -83,13 +83,3 @@ module.exports.register = function(info, callback){
 	}
 }
 
-/*module.exports.findOneBy = function(info={type: "", value: ""}, callback) {
-	Student.findOne({info.type: info.value}, function(err, student) {
-		if(err) {
-			console.log(err)
-		}
-		else {
-			callback(err, student);
-		}
-	});
-}*/
