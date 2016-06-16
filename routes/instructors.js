@@ -74,9 +74,18 @@ router.post('/classes/register', function(req, res){
 
 	Instructor.register(info, function(err, instructor){
 		if (err) throw err;
-		console.log(instructor);
+		//console.log(instructor);
 		req.flash('success', 'You are now registed as an Instructor');
 		res.redirect('/instructors/classes');
+	});
+});
+
+router.get('/classes/:id/students', ensureAuthenticated, function(req, res, next){
+	// console.log(111);
+	Class.getClassesById(req.params.id, function(err, kclass){
+		if (err) throw (err);
+		// console.log("class = " + kclass);
+		res.render('instructors/students', {class: kclass});
 	});
 });
 
@@ -104,8 +113,8 @@ router.post('/classes/:id/lessons/new', function(req, res){
 	}
 
 	if (errors) {
-		console.log("Errors: ", errors);
-		console.log('/instructors/classes/'+ info.class_id + '/lessons/new');
+		// console.log("Errors: ", errors);
+		// console.log('/instructors/classes/'+ info.class_id + '/lessons/new');
 		try{
 			res.render('instructors/newlesson', {
 				errors: errors,
@@ -118,10 +127,10 @@ router.post('/classes/:id/lessons/new', function(req, res){
 	} else {
 		Class.addLesson(info, function(err, lesson){
 			if (err) throw err;
-			console.log("lesson :  ", lesson);
+			// console.log("lesson :  ", lesson);
+			req.flash('success', 'You are added a new lesson');
+			res.redirect('/instructors/classes');
 		});
-		req.flash('success', 'You are added a new lesson');
-		res.redirect('/instructors/classes');
 	}
 });
 

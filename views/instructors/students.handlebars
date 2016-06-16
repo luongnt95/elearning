@@ -1,0 +1,17 @@
+
+	<div class="ui segment">
+	  <div class="ui item">
+
+	    <div class="content">
+		    <a class="ui header">{{{class.title}}}</a>
+	      	<div class="description">
+	        	<p>Lists of student</p>
+	      	</div>
+			{{#each class.students}}
+				<p>Username: {{username}}</p>
+				<p>Email: {{email}} </p>
+				<p>Avatar: {{avatar_url}} </p>
+			{{/each}}
+	    </div>
+	  </div>
+	</div>
