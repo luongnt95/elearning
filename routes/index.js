@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 							for(var index in classes) {
 								classes[index].ratingScore = ratingScores[index];
 							}
-							res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});
+							res.render('index', { "classes": classes, "isHome": true});
 						}
 					});					
 				})(i);
