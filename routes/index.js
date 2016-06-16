@@ -13,7 +13,6 @@ router.get('/', function(req, res, next) {
 				(function(i) {
 					var klass = classes[i];
 					Rating.find({class_id: klass.id}, function(err, ratings) {
-						if(err) res.send(err);
 						var sum = 0;
 						var len = ratings.length;					
 						for(var j = 0; j < len; j++) {
