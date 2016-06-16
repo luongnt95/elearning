@@ -28,12 +28,11 @@ router.get('/', function(req, res, next) {
 							for(var index in classes) {
 								classes[index].ratingScore = ratingScores[index];
 							}
-							
+							return res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});					
 						}
 					});					
 				})(i);
 			}
-			res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});	
 		}
 	}, 100);
 });
