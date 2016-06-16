@@ -3,6 +3,7 @@ var router = express.Router();
 var uploader = require('../uploaders/materialUploader');
 var assign = require('object-assign');
 var only = require('only');
+var auth = require('../helpers/authentication');
 
 Class = require('../models/class');
 Student = require('../models/student');
@@ -14,31 +15,35 @@ router.get('/', function(req, res, next) {
 			res.send(err);
 		} else {
 			var ratingScores = [];
-			for(i in classes) {
-				var klass = classes[i];
-				Rating.find({class_id: klass.id}, function(err, ratings) {
-					var sum = 0;
-					var len = ratings.length;					
-					for(var i = 0; i < len; i++) {
-						sum += ratings[i].score;
-					}
-					if(len == 0) {
-						ratingScores.push(0);
-					}
-					else {
-						ratingScores.push(Math.round(sum/len));
-					}
-					if(ratingScores.length == classes.length) {
-						for(var index in classes) {
-							classes[index].ratingScore = ratingScores[index];
+			for(var i = 0; i < classes.length; i++) {
+				(function(i) {
+					var klass = classes[i];
+					Rating.find({class_id: klass.id}, function(err, ratings) {
+						var sum = 0;
+						var len = ratings.length;					
+						for(var j = 0; j < len; j++) {
+							sum += ratings[j].score;
 						}
-						res.render('classes/index', { "classes": classes});	
-					}
-				});
+						if(len == 0) {
+							ratingScores[i] = 0;
+						}
+						else {
+							ratingScores[i] = Math.round(sum/len);
+						}
+						if(ratingScores.length == classes.length) {
+							for(var index in classes) {
+								classes[index].ratingScore = ratingScores[index];
+							}
+							res.render('classes/index', { "classes": classes});	
+						}
+					});					
+				})(i);
 			}
 		}
 	}, 100);
 });
+
+
 
 router.get('/:id', function(req, res, next){
 	Class.findById(req.params.id, function(err, classDetail){
@@ -50,8 +55,8 @@ router.get('/:id', function(req, res, next){
 			if (req.user){
 				isStudent = req.user.type == 'student';
 			}
-
-			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent});
+			var isLoggedIn = req.user != null;
+			res.render('classes/detail', {"class": classDetail, "isStudent": isStudent, "isLoggedIn": isLoggedIn});
 		}
 	});
 });
@@ -71,7 +76,7 @@ router.get('/:id/materials', function(req, res, next) {
 	});
 });
 
-router.post('/:id/upload', function(req, res, next) {
+router.post('/:id/upload', auth.ensureAuthenticated, function(req, res, next) {
 	Class.findById(req.params.id, function(err, klass) {
 		if(err)	{
 			res.send(err);
@@ -98,10 +103,9 @@ router.post('/:id/upload', function(req, res, next) {
 
 });
 
-router.get('/:id/lessons', function(req, res, next){
+router.get('/:id/lessons', auth.ensureAuthenticated, function(req, res, next){
 	Class.getClassesById([req.params.id], function(err, classDetail){
 		if (err) {
-			console.log(err);
 			res.send(err);
 		} else {
 			res.render('classes/lessons', {"class": classDetail });
@@ -109,10 +113,9 @@ router.get('/:id/lessons', function(req, res, next){
 	})
 });
 
-router.get('/:id/lessons/:lesson_id', function(req, res, next){
+router.get('/:id/lessons/:lesson_id', auth.ensureAuthenticated, function(req, res, next){
 	Class.getClassesById([req.params.id], function(err, klass){
 		if (err) {
-			console.log(err);
 			res.send(err);
 		} else {
 			lesson = {
