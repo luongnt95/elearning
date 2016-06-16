@@ -1,8 +1,8 @@
 #messagebox {
   position: fixed;
   margin-left: 20px;
-  right: 20px;
-  bottom: 20px;
+  right: 45%;
+  top: 0px;
   z-index: 10000;
   padding: 10px;
 }
