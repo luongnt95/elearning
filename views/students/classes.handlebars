@@ -1,19 +1,18 @@
 <div class="ui header">
 	Classes for you:
 </div>
+    {{#each student.classes}}
+<a href="/classes/{{class_id}}/lessons">
+  <div class="ui middle aligned animated selection list">
 
-<div class="ui middle aligned animated list">
-	{{#each student.classes}}
-  <div class="item">
-  	<div class="ui segment">
-    <div class="right floated content">
-      <a href="/classes/{{class_id}}/lessons"> View Lessons </a>
+    <div class="item">
+    	<div class="ui segment">
+      <div class="content">
+        <div class="ui header"> {{{class_title}}} </div>
+      </div>
+     	</div>
     </div>
 
-    <div class="content">
-      <div class="ui header"> {{{class_title}}} </div>
-    </div>
-   	</div>
   </div>
-	{{/each}}
-</div>
+</a>
+    {{/each}}

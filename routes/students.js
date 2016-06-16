@@ -56,7 +56,7 @@ router.post('/:id/update', function(req, res, next) {
 router.get('/classes', ensureAuthenticated, function(req, res, next){
 	var student = cache.get(req.user.username);
 	if (student) {
-		//console.log("student0 = "+ student);
+
 		res.render('students/classes', {"student": student, "messages": req.flash('success')});
 	}
 	else {
@@ -65,9 +65,8 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 				res.send(err);
 			} else {
 				cache.put(req.user.username, student);
-				//console.log("student1 = "+ student);
-				res.render('students/classes', {"student": student, 
-												"messages": req.flash('success')});
+
+				res.render('students/classes', {"student": student, "messages": req.flash('success')});
 			}
 		});
 
@@ -88,12 +87,12 @@ router.post('/classes/register', function(req, res, next){
 			cache.del(req.user.username);
 			Class.addStudent(req.body.class_id, getUserInfo(req), function(err, result){
 				if (err) throw err;
-				//req.flash('success', 'You are now registed');
+				req.flash('success', 'You are now registed');
 				res.redirect('/students/classes');
 			});
 		}
 		else {
-			//req.flash('success', 'You are now registed');
+			req.flash('success', 'You are now registed');
 			res.redirect('/students/classes');
 		}
 	});
