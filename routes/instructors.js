@@ -3,7 +3,9 @@ var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
 var uploader = require('../uploaders/avatarUploader');
-var classImageUploader = require('../uploaders/classImageUploader')
+var classImageUploader = require('../uploaders/classImageUploader');
+
+app = require('../app');
 
 Class = require('../models/class');
 Instructor = require('../models/instructor');
@@ -229,7 +231,10 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	Class.updateClass(info, function(err, newClass){
 		if (err) throw err;
 		// console.log("class :  "+ newClass);
-		sendNotification(newClass, {notification: "Hi"});
+
+		var notification = newClass.title + " has been updated";
+		sendNotification(newClass, 
+						{notification: notification});
 
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
@@ -244,6 +249,7 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 				if (err) throw err;
 				//console.log("Instructor update:  ", instructor);
 					req.flash('success', 'You are added a new class');
+					app.sendN();
 					res.redirect('/instructors/classes');
 			});
 		});
