@@ -59,8 +59,7 @@ router.get('/classes', ensureAuthenticated, function(req, res, next){
 			console.log(err);
 			res.send(err);
 		} else {
-			//console.log(instructor.classes);
-			res.render('instructors/classes', {"instructor": instructor});
+			res.render('instructors/classes', {"instructor": instructor, "messages": req.flash('success')});
 		}
 	});
 });
@@ -159,7 +158,7 @@ router.post('/classes/:id/lessons/:lesson_number/update', function(req, res){
 					});
 				}
 			}
-					
+
 		}
 	})
 });

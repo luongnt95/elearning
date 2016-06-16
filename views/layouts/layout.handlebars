@@ -48,13 +48,13 @@
   <div class="ui doubling stackable grid container">
     <div class="ui row">
     	<div class="twelve wide column">
+      {{#if messages}}
         <div id="messagebox">
-        {{#if messages}}
     		  <div class="ui blue message">
             {{{messages}}}
           </div>
-        {{/if}}
         </div>
+      {{/if}}
     		{{#if errors}}
     			{{#each errors}}
     				<div class="notice error">
