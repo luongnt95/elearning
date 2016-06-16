@@ -92,13 +92,13 @@ app.use(flash());
 // });
 
 //Make user object global in all views
-app.get('*', function(req, res, next) {
-  res.locals.user = req.user || null;
-  if (req.user){
-    res.locals.usertype = req.user.type;
-  }
-  next();
-});
+// app.get('*', function(req, res, next) {
+//   res.locals.user = req.user || null;
+//   if (req.user){
+//     res.locals.usertype = req.user.type;
+//   }
+//   next();
+// });
 
 app.use('/', routes);
 app.use('/users', users);
