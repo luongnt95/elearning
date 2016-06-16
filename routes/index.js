@@ -25,14 +25,15 @@ router.get('/', function(req, res, next) {
 							ratingScores[i] = Math.round(sum/len);
 						}
 						if(ratingScores.length == classes.length) {
-							// for(var index in classes) {
-							// 	classes[index].ratingScore = ratingScores[index];
-							// }
-							res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});
+							for(var index in classes) {
+								classes[index].ratingScore = ratingScores[index];
+							}
+							
 						}
 					});					
 				})(i);
 			}
+			res.render('index', { "classes": classes, "isHome": true, "messages": req.flash('success')});	
 		}
 	}, 100);
 });
