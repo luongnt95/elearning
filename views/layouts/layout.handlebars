@@ -30,7 +30,7 @@
       toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
   });</script>
 </head>
-<body style="background-color: #F5F8FA;">
+<body >
 
   <!-- Menu Horizontal -->
   <div class="ui small menu">
@@ -65,13 +65,13 @@
     			{{/each}}
     		{{/if}}
     		{{{body}}}
+        {{#if isHome }}
+          {{>classes}}
+        {{/if}}
     	</div>
 
     	<div class="four wide column">
     		{{>login}}
-        {{#if isHome }}
-          {{>classes}}
-        {{/if}}
     	</div>
     </div>
   </div>
