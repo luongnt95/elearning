@@ -12,7 +12,7 @@ body {
 }
 
 .star.glow {
-	color: brown;
+	color: orange;
 }
 
 .star {
@@ -27,6 +27,7 @@ body {
 #rating {
 	cursor: pointer;
 	text-align: center;
+  font-size: 30px;
 }
 
 .ui.modal {
