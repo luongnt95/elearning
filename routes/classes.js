@@ -35,7 +35,7 @@ router.get('/', function(req, res, next) {
 								classes[index].ratingScore = ratingScores[index];
 							}
 							console.log("hello");
-							 // res.render('classes/index', { "classes": classes});
+							 res.render('classes/index', { "classes": classes});
 							 // res.render('classes/index', { "classes": classes});
 						}
 					});					
