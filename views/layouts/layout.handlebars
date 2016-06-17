@@ -11,6 +11,7 @@
   <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" media="all" /> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.css">
   <link rel="stylesheet" href="/stylesheets/custom.css">
+
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
   <script type = "text/javascript" src="/javascripts/tinymce/tinymce.min.js"></script>
@@ -75,6 +76,35 @@
     	</div>
     </div>
   </div>
+
+    <div id="notification">Notifications ...</div>
+    {{#if user}} 
+        <input id="user_id_value" type="hidden" value="{{user._id}}"> </input>
+    {{/if}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    $(document).ready(function(){
+        user_id_login = $("#user_id_value").val();
+        console.log(window.location.origin);
+        // create a new websocket
+        if (user_id_login) {        
+            var socket = io.connect(window.location.origin, { query: 'user_id='+user_id_login });
+            // on message received we print all the data inside the #container div
+             
+            socket.on('notification', function (user) {
+                var value = "<dl> Notifications: ";
+                $.each(user.notifications,function(index, notification){
+                    value += "<p>" + notification.notification + "\n</p>";
+                });
+                value += "</dl>";
+                $('#notification').html(value);
+
+                //$('time').html('Last Update:' + data.time);
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

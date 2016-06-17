@@ -3,7 +3,9 @@ var router = express.Router();
 var assign = require('object-assign');
 var only = require('only');
 var uploader = require('../uploaders/avatarUploader');
-var classImageUploader = require('../uploaders/classImageUploader')
+var classImageUploader = require('../uploaders/classImageUploader');
+
+app = require('../app');
 
 Class = require('../models/class');
 Instructor = require('../models/instructor');
@@ -125,9 +127,13 @@ router.post('/classes/:id/lessons/new', function(req, res){
 			console.log(err);
 			}
 	} else {
-		Class.addLesson(info, function(err, lesson){
+		var notification = klass.title + "has a new lesson";
+		sendNotification(newClass, 
+						{notification: notification});
+		Class.addLesson(info, function(err, klass){
 			if (err) throw err;
 			// console.log("lesson :  ", lesson);
+			app.sendN();
 			req.flash('success', 'You are added a new lesson');
 			res.redirect('/instructors/classes');
 		});
@@ -229,7 +235,10 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 	Class.updateClass(info, function(err, newClass){
 		if (err) throw err;
 		// console.log("class :  "+ newClass);
-		sendNotification(newClass, {notification: "Hi"});
+
+		var notification = newClass.title + " has been updated";
+		sendNotification(newClass, 
+						{notification: notification});
 
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
@@ -244,6 +253,7 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 				if (err) throw err;
 				//console.log("Instructor update:  ", instructor);
 					req.flash('success', 'You are added a new class');
+					app.sendN();
 					res.redirect('/instructors/classes');
 			});
 		});
@@ -305,5 +315,6 @@ function sendNotification(klass, notification){
 		});
 	});
 }
+
 
 module.exports = router;
