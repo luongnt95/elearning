@@ -155,7 +155,7 @@ var pollingLoop = function(connections) {
     for (i in connections) {
         var socket = connections[i];
         var user_id = socket.request._query['user_id'];
-        // console.log("user_id = " + user_id);
+        console.log("user_id = " + user_id);
         var query = User.findById(user_id, function(err, user){
             // console.log(user);
             socket.volatile.emit('notification', user);
