@@ -127,9 +127,13 @@ router.post('/classes/:id/lessons/new', function(req, res){
 			console.log(err);
 			}
 	} else {
-		Class.addLesson(info, function(err, lesson){
+		var notification = klass.title + "has a new lesson";
+		sendNotification(newClass, 
+						{notification: notification});
+		Class.addLesson(info, function(err, klass){
 			if (err) throw err;
 			// console.log("lesson :  ", lesson);
+			app.sendN();
 			req.flash('success', 'You are added a new lesson');
 			res.redirect('/instructors/classes');
 		});
@@ -311,5 +315,6 @@ function sendNotification(klass, notification){
 		});
 	});
 }
+
 
 module.exports = router;
