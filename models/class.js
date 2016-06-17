@@ -49,6 +49,12 @@ module.exports.destroyClass = function(info, callback){
 }
 
 module.exports.getClassesById = function(id, callback){
+	Class.findById(id, function(err, klass) {
+		klass.lessons.pull();
+		klass.save(function(err) {
+			
+		})
+	})
 	Class.findById(id, callback);
 }
 
