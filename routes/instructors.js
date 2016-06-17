@@ -133,6 +133,7 @@ router.post('/classes/:id/lessons/new', function(req, res){
 		Class.addLesson(info, function(err, klass){
 			if (err) throw err;
 			// console.log("lesson :  ", lesson);
+			console.log("luong")
 			app.sendN();
 			req.flash('success', 'You are added a new lesson');
 			res.redirect('/instructors/classes');
@@ -243,6 +244,8 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
 			// console.log("Instructor :  ", instructor);
+			console.log("luong")
+			console.log(req.user.id)
 			for ($i=0; $i<instructor.classes.length; $i++) {
 				if (instructor.classes[$i].class_id == info.class_id) {
 					instructor.classes[$i].class_title = info.class_title;
