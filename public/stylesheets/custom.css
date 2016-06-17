@@ -42,3 +42,16 @@ body {
   color: green;
   font-size: 0.8em;
 }
+
+#comment-message{
+  position: fixed;
+  margin-left: 20px;
+  right: 45%;
+  top: 20px;
+  z-index: 10000;
+  padding: 10px;
+}
+
+#comment_area{
+  margin-top: 1em;
+}
