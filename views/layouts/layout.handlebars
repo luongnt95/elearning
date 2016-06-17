@@ -39,6 +39,19 @@
     <a class="item" href="/classes">Classes</a>
     <div class="right menu">
       {{#if user}}
+      <div class="item">
+        <div class="ui dropdown">
+          <i class="alarm icon"></i>
+          <i class="dropdown icon"></i>
+          <div class="ui vertical menu">
+
+            <div id="notification">Notifications ...</div>
+            {{#if user}}
+                <input id="user_id_value" type="hidden" value="{{user._id}}">
+            {{/if}}
+          </div>
+        </div>
+      </div>
       <a class="item" href="/{{user.type}}s/{{user._id}}/profile"> <img class="ui avatar image" src="{{user.avatar_url}}">
           <span>{{user.username}}</span>
       </a>
@@ -77,27 +90,27 @@
     </div>
   </div>
 
-    <div id="notification">Notifications ...</div>
-    {{#if user}} 
-        <input id="user_id_value" type="hidden" value="{{user._id}}"> </input>
-    {{/if}}
 
+
+<script>$('.ui.dropdown')
+  .dropdown()
+;</script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     $(document).ready(function(){
         user_id_login = $("#user_id_value").val();
         console.log(window.location.origin);
         // create a new websocket
-        if (user_id_login) {        
+        if (user_id_login) {
             var socket = io.connect(window.location.origin, { query: 'user_id='+user_id_login });
             // on message received we print all the data inside the #container div
-             
+
             socket.on('notification', function (user) {
-                var value = "<dl> Notifications: ";
+                var value = "<div class='ui center aligned header notification-header'> Notifications: ";
                 $.each(user.notifications,function(index, notification){
-                    value += "<p>" + notification.notification + "\n</p>";
+                    value += "<a class='item'>" + "<i class='info circle icon'></i>" + "<span class='notification-text'>" + notification.notification + "</span>" + "</a>";
                 });
-                value += "</dl>";
+                value += "</div>";
                 $('#notification').html(value);
 
                 //$('time').html('Last Update:' + data.time);
