@@ -127,13 +127,12 @@ router.post('/classes/:id/lessons/new', function(req, res){
 			console.log(err);
 			}
 	} else {
-		var notification = klass.title + "has a new lesson";
-		sendNotification(newClass, 
-						{notification: notification});
 		Class.addLesson(info, function(err, klass){
 			if (err) throw err;
 			// console.log("lesson :  ", lesson);
-			console.log("luong")
+			var notification = klass.title + "has a new lesson";
+			sendNotification(klass, 
+						{notification: notification});
 			app.sendN();
 			req.flash('success', 'You are added a new lesson');
 			res.redirect('/instructors/classes');
