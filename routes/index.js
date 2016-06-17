@@ -5,6 +5,9 @@ Class = require('../models/class');
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	Class.getClasses(function(err, classes){
+		if(classes.length == 0) {
+			res.render('index', { "classes": classes.slice(0, 3), "isHome": true, "messages": req.flash('success')});
+		}
 		if (err){
 			res.send(err);
 		} else {

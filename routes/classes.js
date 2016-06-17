@@ -13,6 +13,9 @@ Rating = require('../models/rating');
 router.get('/', function(req, res, next) {
 	// app.sendN();
 	Class.getClasses(function(err, classes){
+		if(classes.length == 0) {
+			return res.render('classes/index', { "classes": classes});
+		}
 		if (err){
 			res.send(err);
 		} else {
