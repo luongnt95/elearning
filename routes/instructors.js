@@ -131,7 +131,7 @@ router.post('/classes/:id/lessons/new', function(req, res){
 			if (err) throw err;
 			// console.log("lesson :  ", lesson);
 			var notification = klass.title + "has a new lesson";
-			sendNotification(klass, 
+			sendNotification(klass,
 						{notification: notification});
 			app.sendN();
 			req.flash('success', 'You are added a new lesson');
@@ -211,7 +211,7 @@ router.post('/classes/new', ensureAuthenticated, function(req, res, next){
 			Instructor.saveClass(info, function(err, instructor){
 				if (err) throw err;
 				// console.log(instructor);
-				req.flash('success', 'You are added a new class');
+				req.flash('success', 'You added a new class');
 				res.redirect('/instructors/classes');
 			});
 		});
@@ -237,7 +237,7 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 		// console.log("class :  "+ newClass);
 
 		var notification = newClass.title + " has been updated";
-		sendNotification(newClass, 
+		sendNotification(newClass,
 						{notification: notification});
 
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
@@ -254,7 +254,7 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 			instructor.save(function(err, instructor){
 				if (err) throw err;
 				//console.log("Instructor update:  ", instructor);
-					req.flash('success', 'You are added a new class');
+					req.flash('success', 'You updated a new class');
 					app.sendN();
 					res.redirect('/instructors/classes');
 			});
@@ -275,12 +275,12 @@ router.post('/classes/:id/drop', ensureAuthenticated, function(req, res){
 			//console.log("Instructor finded:  ", instructor.classes[0].class_id[0]==info.class_id);
 
 			instructor.classes = instructor.classes.filter(function(classDetails){return classDetails.class_id[0] != info.class_id});
-			
+
 			// console.log("Instructor dede:  ", instructor.classes);
 			instructor.save(function(err, instructor){
 				if (err) throw err;
 				// console.log("Instructor update:  ", instructor);
-				req.flash('success', 'You are added a new class');
+				req.flash('success', 'You droped a class');
 				res.redirect('/instructors/classes');
 			});
 		});
