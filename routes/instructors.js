@@ -243,6 +243,8 @@ router.post('/classes/:id/update', ensureAuthenticated, function(req, res){
 		Instructor.findOne({user_id: req.user._id}, function(err, instructor){
 			if (err) throw err;
 			// console.log("Instructor :  ", instructor);
+			console.log("luong")
+			console.log(req.user.id)
 			for ($i=0; $i<instructor.classes.length; $i++) {
 				if (instructor.classes[$i].class_id == info.class_id) {
 					instructor.classes[$i].class_title = info.class_title;
