@@ -33,3 +33,12 @@ body {
 .ui.modal {
 	transform: translateY(-50%);
 }
+
+#notification{
+  padding: 10px 10px 10px 10px;
+}
+
+.notification-text{
+  color: green;
+  font-size: 0.8em;
+}
