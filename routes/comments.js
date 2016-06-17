@@ -11,7 +11,7 @@ router.post('/', auth.ensureAuthenticated, function(req, res, next) {
 	assign(comment, comment_params(req));
 	comment.save(function(err) {
 		if(err) res.send(err);
-    console.log(comment);
+    	// console.log(comment);
 		res.redirect(`/classes/${req.body.class_id}/lessons/${req.body.lesson_number}`);
 	});
 });

@@ -151,13 +151,13 @@ var pollingLoop = function(connections) {
 
     // console.log(2222);
     //Doing the database query
-console.log('Number of connections sent:' + connections.length);
+    console.log('Number of connections sent:' + connections.length);
     for (i in connections) {
         var socket = connections[i];
         var user_id = socket.request._query['user_id'];
         // console.log("user_id = " + user_id);
         var query = User.findById(user_id, function(err, user){
-            console.log(user);
+            // console.log(user);
             socket.volatile.emit('notification', user);
         });
     }
