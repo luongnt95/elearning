@@ -3,6 +3,7 @@ var router = express.Router();
 var uploader = require('../uploaders/materialUploader');
 var assign = require('object-assign');
 var only = require('only');
+app = require('../app');
 var auth = require('../helpers/authentication');
 
 Class = require('../models/class');
@@ -10,6 +11,7 @@ Student = require('../models/student');
 Rating = require('../models/rating');
 
 router.get('/', function(req, res, next) {
+	// app.sendN();
 	Class.getClasses(function(err, classes){
 		if (err){
 			res.send(err);
